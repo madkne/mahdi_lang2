@@ -1,0 +1,10 @@
+package app1
+class myapp1(){
+	x:num
+	y:num
+	@init
+	func _init_(x,y)
+	func _str_(){
+		return "myapp1 is ({x},{y})"
+	}
+}

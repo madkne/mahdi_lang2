@@ -1,0 +1,5 @@
+package app1
+func hello(g:num,n=4){
+	if(n>4) g++
+	return g++,'hello'
+}

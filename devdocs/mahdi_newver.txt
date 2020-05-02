@@ -1,0 +1,410 @@
+
+		-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+		|  Mahdi Programming Language   |
+		-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+-----------------------------
+Influenced by:
+C,PHP,MPL,PYTHON,JAVA,GO,TYPESCRIPT
+-----------------------------
+step 1	: import all files of package [..]
+step 2	: parsing all functions , classes , instructions [..]
+step 3	: resolve all inherit classes [..]
+step 4	: run codes line by line [..]
+step 5	: if debug mode is on, then go to mdebug and wait!
+step 6	: import modules and packages [..]
+step 7	: if build mode is on, then go to mbuild and compile execute file! [..]
+-----------------------------
+Pros:
+1. object-oriented!
+2. using lambda as a data type
+3. all config of project is in source code
+4. minimum keywords and fast learning
+5. type safed with auto detect data type by value
+6. inline string formatting
+7. using common loop(for,while,foreach)
+8. using modules(as dll,so) and packages(as user defined) in apps
+9. for run a program in program directory just type: mahdi myapp
+10. run lambda functions as new thread
+11. support method overloads (just by count and type of parameters)
+12. build a binary executable file from program
+13. support for calculating huge numbers(with infinity digits)
+14. flexible exception handler with manage it or not!
+15. facility for swaping values of two variables by ':='
+16. support for built-in power operator for all numeric values
+17. support for infinity function parameters by '...'
+18. support for dynamic operators and indexes for classes
+19. using packaging model for source codes
+20. support dictionary(map) data structure
+21. has built-in garbage collector(gc)
+22. expandability by c,c++ modules
+23. written on pure C programming language
+24. support switch condition equivalent
+25. support for utf8 encoding
+26. support for built-in debugger
+27. support for built-in packager
+28. support for getter and setter attributes of classes
+
+-----------------------------
+/*
+**basic data types**
+num,str,bool,lambda
+**sub data types**
+number:i(8dig),f(10dig),h
+boolean:b
+lambda:m
+string:s,u
+pointer:p
+**Keywords**
+func,class,package,override,static,true,false,if,elif,else,choose,and,or,not,next,break,loop,num,str,bool,lambda,manage,return,this,import,config=>25
+*************************************
+-----------------builtin functions
+len(var),typeof(var)/*num,str[],class1*/,subtypeof(var)/*i,f,h,b,m,p*/,exec(str),raise(str,type),del(var),nil(var)/*check is empty*/,tostr(var)/*convert to string*/,tonum(str)/*convert to number*/,isnum(str),isarray(var),stackparams()
+-----------------predefined class methods
+- these functions just called by mahdi, not programmer!
+_bootup_(string):num,_init_():package,_plus_(package):package,_minus_(package):package,_multiply_(package):package,_divide_(package):package,_len_():num,_str_():string,_equal_(package):boolean,_empty_():boolean/*nil(pack1)*/,_del_():bool/*del(pack1)*/,_index_(num|str),_range_(num,num)/*class1[4:6]*/
+-----------------Extensions
+- mah    : mahdi source files
+- mahpack : mahdi package bytecode files
+-----------------Operators
++,-,*,/,|(int divide),%(int),^
+==,<=,>=,!=,<,>
++=,++,--,-=,*=,/=,%=,^=,:=,|=
+:,::,=>
+*************************************
+MAHDI structure: (linux)
+- mahdi/
+	- bin/
+		- mahdi
+		- mrm (mahdi repository manager)
+	- mods/
+		- os.so
+		- math.so
+		- thread.so
+		- exception.so
+		- sqlite3.so
+		- stdio.so
+		- time.so
+		- mgui.so (mahdi cross-platform gui kit)
+		- socket.so
+	- pkgs/
+		- encoding.mahpack (json,xml,base64,csv,...)
+		- net.mahpack
+		- mlearn.mahpack
+		- crypto.mahpack (aes,md5,sha1,...)
+		- compress.mahpack (gzip,bzip2,zlib,tar,zip,...)
+	- docs/
+	- samples/
+	- tmp/
+	- LICENSE.txt
+*************************************
+-----------------modules and packages
+- modules in c,c++ with .dll or .so
+- packages in mahdi with .mahpack
+- import from modules and packages just classes and global functions
+- every project(main project or package) have a package name!
+
+-----------------config keyword
+- config just in outof any classes and functions
+config DebugMode=true
+config ErrorsState='fetal'
+ErrorsState(string),WarningsState(string),ExportLogFile(string),MaxHugeDivideSteps(number),MaxHugeDecimalNumbers(number),DebugMode(boolean),ExportBuildFile(string),BuildMode(boolean),PackageMode(boolean),ExportPackageFile(string)
+----------------- import keyword
+- you can not import any file in program (because all files of this packages is imported!)
+- every modulee have just one class!
+
+/home/am/Desktop/proj/:
+	- main.mah
+	- p1.mah
+	- app2/
+		- p2.mah
+/opt/mahdi/pkgs/:
+	- mypack.mahpack
+	- mypack1.mahpack
+	- other.mahpack
+/opt/mahdi/mods/:
+	- os.so
+	- math.so
+	- exception.so
+
+
+import [type]:[name,..]:[classes?],[@functions?]
+[type] : mod | pack
+[name] : path of file with . instead of /
+import mod:exception,os
+import mod:math
+import pack:mypack,mypack1 //import all clsses and all global functions
+import pack:other:class1,class2,@fun1 //import class1,class2 classes and fun1 global function
+-----------------class methods and attributes
+- at sign class keywords:@public,@private,@getter,@setter,@init
+- class properties can not have static or override 
+- for getter and setter of class attribute, private or public not important!
+
+package myapp
+class pk1(){
+	@private
+	x=0
+	y:num
+	@public
+	static func h2(){}
+	@private
+	override static func h1(){}
+	@init
+	func _init_(x,y) //=> OR func _init_(x:num,y:num){this.x=x;this.y=y;}
+}
+OR
+class pk1(){
+	GG=(45*2)+5
+	exp:exception=exception()
+	aa=11
+	v=3
+	q:str
+	z1,z2,z3=3,true and true,"hello"
+	fg:str
+	static func h2(){}
+	@private
+	override static func h1(){}
+	@getter
+	func fg(){}
+	@setter
+	func fg(s:string){}
+}
+-----------------switch structure
+- if not set true item(default case), occurs an warning and if not all conditions, occurs an error!
+- can not define another choose into the other
+choose(var){
+   (43)=>{
+   	//do something
+   }
+   (34 or 12)=>//do something
+   ()=>{
+   	//do something
+   }
+}
+-----------------declare simple variables
+- all variables must get default value when declared
+- you can set default value for all rooms of array
+- for define every variable, must determine its data type (as clean or by value)
+g,k=0,''
+j,d,b= 56.6,['t','o'],true //=>detect data type by value
+x:num,e,u=45
+n,m,b=0,6,true
+-----------------const var
+- if in define var, all chars is capital, is const var
+B:bool=true
+VERSION=''
+-----------------declare and using lists and maps
+- you can get range of an array or string by ':' always return an array
+list1:num[]=[4,6,9,-3] //=>g=list1[2] //g=9
+er=['q1':23,'q2':67] //num j=e['q1']
+dd=[[2.6,6],[5,-7.1]] OR dd:num[]=[[2.6,6],[5,-7.1]]
+ddd=[['q1':'3','q2':'5'],['f':'fg','g':'gf']] //=>h:str=ddd[1]['f']
+dd=[2,89,6] //ERR=>dd[]=[2,89] => dd[]=2
+gh:str[]=['fg','t':'rt']; // c=gh[1] (c='rt') OR c=gh['t']
+del(gh['f']) OR del(gh[1])
+
+v:num[]=list1[1:3]; //v=[6,9]
+s=["amin","ali"]
+ss=s[0][1:4];//ss=['m','i','n'];
+-----------------declare lambda vars and using them
+- lambda variable functions just access to global variables not local variables in class or function!
+- every lambda function, run in seperate thread
+lam:lambda=(&g:num)=>{
+	g++
+	return 'hi'
+}
+func1(lam) //OR func1((g:num)=>{return ++g})
+-----------------swap with :=
+- swap is just for same type variables
+n=45,q=[5,9.6];
+n:=q[0] //n=5,q[0]=45
+w=[6]
+w:=q
+-----------------create instance of a new package
+t1=type1(45)
+t1.add(34) OR t1 = type1(56).add(57)
+-----------------set vars in string
+t="Amin";j=56;
+s="progress of {t} : {j+1}\%";
+s1="hello {type1(56)}"
+-----------------loop
+loop([section1];[section2];[section3])
+[section1] : just run in first time (for define vars)
+[section2] : run every time and decide that loop be continue (for check vars) [is required]
+[section3] : run every time except first time (for change vars)
+sample:
+- loop(i=0,u='';i<10,u!="Hello";i++)
+- loop(u:str='',b='',i=0;u:uu;i+=5,u[0]+=" ") //uu=[["x","v"],["h","i"]] browse uu array => u=["x ","v"]
+- loop(;i<5) or loop(;i<5;)
+- loop(h=get1(),def k=0;h<get2(k);k++,h++)
+- loop(u='',def b='',i=0;u!="Hi")
+u:num[];
+loop(j=0;j:u) //foreach an array
+-----------------break,next
+- break instruction can give a number that determine how many break from multiple loops
+- next instruction can not gives any numbers!
+loop(..){
+	loop(..){
+		a=b;
+		break(2); //break(*) : break all loops
+		//=>default: break OR break(1)
+	}
+	next;
+}
+-----------------manage
+- manage can get not any parameters like : manage()
+- manage get a var type exception
+- in manage, when get exception, then stop and out of manage block!
+- without manage block, when get exception, ignore that line and continue from next line :)
+
+manage(){ //=>just interuppt when occurs an error
+//do something
+}
+exp=exception();
+manage(exp){ //=>interuppt when occurs an error and put error and warnings in exception var
+//do something
+}
+if(not nil(exp)){
+//do something
+}
+-----------------function header
+- function header can a parameter with default value
+- default value of a paqrameter can be a value expression(number|string|boolean) or an array as simplest! like 4+5,true,'he'+'llo',[5,8.5-4],['q1':67,'q2':9*4]
+- function parameter must have data type or default value
+- function parameter can be a call by reference param, if before name has '&'
+- reference parameters can not have default value
+- for using infinity params,use ... and stackparams()
+
+func sam(d:str,g=34/*OR g:num*/)
+func sam1(j=3,jj:str)
+func sam2(&k:num,u=0) //=>k is a reference param
+func sam3(k:lambda=()=>{}) //=>k is a lambda function
+func printf(format:str,...){
+	stackparams()
+	loop(;true){
+		var = stackparams()
+		if(typeof(var)=='num'){//do someting...}
+	}
+}
+----------------- call function
+- all functions that defined out of all classes, not give any attribute(private,static)
+- call function can using parameter name!
+- for call a method from another method of class can use 'this' keyword
+- in calling a function, you can using parameters with their names
+- plus oe minus operators between instances of a class are function call
+func fg(k:lambda){k(1)}
+func _bootup_(){
+	fg((i=0)=>print('hello:{i}'))
+}
+sam1(jj="er",j=7.656) OR sam1(34,"hello")
+//call static function
+pkg.main(); OR mypkg1=pkg();mypkg1.main();
+//get public const class vars
+def f=pkg::ERRORSTATE; //f=4
+//call class function
+mypkg1=pkg();mypkg1.sub() OR pkg().sub() 
+def z=pkg1+pkg2 //if defined _plus_(p:class) in pkg1
+def g,s=sam()
+g,s=sam() //=>ERR:if sam() return not two values
+j=0;j=f("g",6.8)[1]  //=>j get 2nd returned value
+j,_,i = f() //return three values but need just first and three values!
+-----------------short condition
+d=rt>3?'hi':'bye'
+fg = (rt>3 and rt<5)? 34 : -1
+-----------------var alloc
+a=3
+b+=4
+a:=b
+a,b+=sam()
+b,c,d=sam() //ERR:if sam() not return three values
+v,n=e,u // OR v=e;n=u;
+-----------------operands on boolean
+and : true and false => false
+or  : true or false => true
+not : not true => false
+--samples
+true and (not false or (true and false)) => true
+=> (0) and : true , (1)    => (0)=true
+=> (1) or  : true , (2)    => (1)=true
+=> (2) and : true , false  => (2)=false
+false and not true or not false => true
+=> (0) or  : (1) , true  => (0)=true
+=> (1) and : false , false => (1)=false
+true and not (false and true) => true
+=> (0) and : true , (1)(n)  => (0)=true
+=> (1) and : false, true    => (1)=true
+-----------------operands on string
++ : "He"+"llo" => 'Hello'
+- : 'HelHelloHel'-'HelHello' => 'Hello' //'Hel'-'HelHello' => 'Hel'
+++,-- : last spaces (on string variable)
+--samples
+("i"+"H"+"H")-"HH"=>"iHH"-"HH"=>"i"
+
+-----------------if in if
+if(true)
+  if(ty>7 and rt=='56'){
+    console.print('gggg')
+    loop(;true)
+       break
+  }else
+    console.print('ffff')
+-----------------++,--
+- for strings and numbers
+str:("Hello")
+	++:"Hello " (add a space end of string)
+	--:"Hell" (remove last char of string)
+num:(45.5)
+	++:46.5 (plus num by 1)
+	--:44.5 (subtraction num by 1)
+q=1
+e1=(45*q++) //=>e1=45,q=2
+e2=(45*++q) //=>e2=90,q=2
+-----------------control characters
+\n : new line
+\r : go to first char position
+\t : insert tab
+\" : print "
+\' : print '
+\\ : print \
+\% : print %
+\b : backspace
+\a : play alert sound
+-----------------_bootup_ function
+- bootup function can just run for once, not recursive
+- bootup function must be out of any classes
+- bootup can give app arguments
+- just one bootup function exist in all program
+func _bootup_(){}
+func _bootup_(argvs:str[]/*OR argvs=[]*/){}
+-----------------_init_ function
+- class constructor and must be just public!
+pack main(){
+@public
+func _init_(s:str,y:str){}
+}
+-----------------inherit classes
+- if a method override, then in next class that inherit it, can define a method with same name else error! 
+- just public methods can have override,static properties
+- example of override: override func _str_(){}
+- just from one class can inherits
+
+package myapp
+class pkg1(){
+   @public
+   override func ps1(){}
+   static func ps3(k:num){
+      this.ps2(56)
+   }
+   @private
+   func ps2(j:num){}
+   
+}
+class pkg2(pkg1){
+   func ps1(jj=56){} //not override on ps1 of pkg1
+   (static|override) func ps3(kk:num){} //ERR:exist this on super and not override
+   func ps2(j:num){
+      this.ps2(4)
+      this.ps1()
+      this.ps3(78)
+   }
+}

@@ -1,0 +1,11 @@
+package app1
+func _bootup_(){
+    t=5
+    if(t==5 or t<5){
+    	v=[5,8]
+    	t++
+    }
+    g,_=hello(t,(t+1)*0b0101^0xa)
+    myapp11 = myapp1(4,6.6)
+    s = tostr(myapp11)
+}

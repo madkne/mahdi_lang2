@@ -1,0 +1,133 @@
+----------------APP1--------------------
+//=>test.mah
+package app1
+func _bootup_(){
+    t=5
+    if(t==5 or t<5){
+    	v=[5,8]
+    	t++
+    }
+    g,_=hello(t,(t+1)*0b0101^0xa)
+    myapp11 = myapp1(4,6.6)
+    s = tostr(myapp11)
+}
+********************
+//=>test1.mah
+package app1
+func hello(g:num,n=4){
+	if(n>4) g++
+	return g++,'hello'
+}
+********************
+//=>test2.mah
+package app1
+class myapp1(){
+	x:num
+	y:num
+	@init
+	func _init_(x,y)
+	func _str_(){
+		return "myapp1 is ({x},{y})"
+	}
+}
+
+----------------APP2--------------------
+import mod:core:console
+import file:.other
+func _bootup_(){
+	def f="سلام به دنیا \
+	hello world!"/*is comment
+	ha ha...
+	*/
+    console.print('Hello World\n')
+
+}
+----------------APP3--------------------
+pack pk1(){
+	@public
+	static func h2(s:string,g=56*4+2/*OR g:number*/,ll=[65-12,67.7]){}
+	@private
+	override static func h1(xx:number=45.3,s='hello'*3,k={'f':0/6,'v':00.5}){}
+}
+func _bootup_(argvs){
+
+}
+----------------APP4--------------------
+import mod:core:console
+func _bootup_(argvs:string){
+	def f=45
+	if(f>20){
+		if(f+1<30)
+			console.print("H1")
+		elif(f+2==30){
+			console.print("H2")
+			console.print("H3")
+		}
+		else
+			console.print("H4")
+	}else{
+		loop(def g=0;g<10;g++){
+			choose(g){
+				->1 or 2:console.print("H1")
+				->3 or 4:console.print("H2")
+				->5 or 6:console.print("H3")
+				->true  :console.print("Hn")
+			}
+		}
+	}
+}
+----------------APP5--------------------
+pack pk2(pk1){
+func f3(){}
+func f4(){}
+@private
+def g:string='HE'
+}
+pack pk0(){
+@private
+def g,y:number=2*6
+func f1(k:number){
+def h=this.g
+}
+override func f2(d="hel"+"lo"){}
+@public
+static def bb=[3,6,7]
+}
+pack pk1(pk0){
+static func f2(h:number,d:string){}
+override func f3(f:boolean){
+def g=456
+if(g==45){}
+}
+}
+func _bootup_(){}
+----------------APP6--------------------
+import mod:core:console
+func _bootup_(argvs:string){
+	console.print('Hello World\n')
+}
+----------------APP7--------------------
+import mod:core:console
+config ErrorsState='fatal'
+func _bootup_(argvs:string){
+	console.print('Hello World\n')
+}
+config DebugMode=false
+
+
+----------------APP8--------------------
+import mod:core:console,exception
+def Name:string="Hello"
+def HWE=Name
+def vv=[{'q1':5.78,'q2':(3.14*10)+4},{'s':9999,'v':-7777,'r':88888}]
+def man=main()
+func _bootup_(argvs:string){
+	def f=4*4
+	main.hello()
+}
+pack main(){
+	def exp:exception=exception()
+	static func hello(){
+		console.print('Hello World\n')
+	}
+}

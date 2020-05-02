@@ -1,0 +1,39 @@
+
+ 
+var_memory (Mvar) :
+- Longint id
+- Longint pointer_id
+- Longint block_id    (0:global vars or pack vars or func direct vars)
+- Longint func_id     (0:global vars or pack vars)
+- Longint func_index  
+- Longint pack_id     (0:global vars in outer or inner of global functions)
+- Longint pack_index
+- Longint type_id
+- Boolean is_static
+- Boolean is_private
+- uint8 flag
+- String  name
+*************************************
+pointer_memory (MPoint) :
+- Longint id
+- uint8   type ('i':int , 'f':float , 'h':huge , 's':string , 'u':utf8 , 'b':boolean , 'p':Pointer To Mpoint , 'v':Pointer To Mvar, 'l': list(pointer to Mpoint) , 'm':map(pointer to Mpoint))
+- String  data
+*************************************
+pointer_memory_v2 (MPoint_v2) :
+- Longint id
+- uint8 type ('i':int , 'f':float , 'h':huge , 's':string , 'u':utf8 , 'b':boolean , 'm':lambda , 'p':Pointer To Mpoint , 'v':Pointer To Mvar, 'l': list(pointer to Mpoint) , 'm':map(pointer to Mpoint))
+
+- string raw (for int,float,huge,string,utf8,lambda) = 0
+- Boolean bool (for boolean) = false
+- LongintList points (for mpoint,mvar,list,map) = 0
+- uint32 points_len = 0
+- StrList keys = 0 (for map)
+- uint32 keys_len = 0
+*************************************
+data_point_memory (MDataPoint) :
+- Longint id
+- Longint index = 0
+- string raw = 0
+
+
+
