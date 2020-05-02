@@ -1,9 +1,9 @@
 <p align="center" >
-<img src="docs/assets/logo.png"  alt="Mahdi Programming Language" title="Mahdi Programming Language"> <br>
+<img src="devdocs/assets/logo.png"  alt="Mahdi Programming Language" title="Mahdi Programming Language"> <br>
 **MAHDI (BETA-0.1)**
 </p>
 
-![Build Status](docs/assets/passing.svg)
+![Build Status](devdocs/assets/passing.svg)
 
 **Mahdi** is a small, lightweight, fast programming language written in C (c99) without any non-standard libraries that Assemble all the good features of programming languages.
 
@@ -75,7 +75,7 @@ MAHDI 'Hello World' Program
     /**
     * main function that boot app from Here!
     */
-    func _bootup_(argvs=[]){
+    func _bootup_(){
         f="سلام به دنیا \
         hello world!\n"
         stdio.print(f)
