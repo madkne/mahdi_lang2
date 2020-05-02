@@ -12,6 +12,9 @@ void EXP_init() {
   EXP_define(2, ERROR_ID, "unknown_opt", CommandError, "unknown option '!1@1!'");
   EXP_define(3, FATAL_ID, "not_exist_pack", CommandError, "can't find package '!1@1!',No such file.");
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+  //OSError
+  EXP_define(1, WARNING_ID, "not_enough_memory", OSError, "not enough memory to allocate '!1@1!' bytes");
+  //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   //DebuggerError
   // EXP_define(1, ERROR_ID, "not_enough_params", DebuggerError, "your input has not enough parameters");
   // EXP_define(2,ERROR_ID,"not_exist_source",

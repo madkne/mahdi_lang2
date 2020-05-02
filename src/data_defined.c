@@ -6,6 +6,8 @@ String interpreter_level = 0;
 
 String project_root = 0;
 
+String program_package = 0;
+
 String main_source_name = 0;
 
 String interpreter_path = 0; //=>mahdi dir path, if not real mahdi
@@ -31,14 +33,16 @@ String os_version = 0;
 
 String program_command=0;
 
-uint64 os_total_memory = 0; //in bytes
-uint64 os_total_disk = 0; //in kilo-bytes
+Longint os_total_memory = 0; //in bytes
+Longint os_total_disk = 0; //in bytes
 Longint max_size_id = 0;
 
-uint32 max_mahdi_modules_instance_len = 100;
 Boolean is_real_mahdi = false;
 
-//-------------------------------------------------------defualt for config entries
+StrList program_argvs = 0;
+uint32 argvs_len = 0;
+
+//*************************defualt for config entries
 int8 errors_mode = ERROR_ID;
 int8 warnings_mode = WARNING_ID;
 uint8 is_programmer_debug = 2;
@@ -49,11 +53,10 @@ Boolean optimize_mode = false;
 Boolean overwrite_builtin_mode = false;
 Boolean debug_mode = false;
 String logfile_path = 0;
-String namespace = 0;
 String bytecode_path = 0;
 Boolean build_mode = false;
 String buildfile_path = 0;
-//-------------------------------------------------------
+//*************************
 String exceptions_group[] = {
     "ImportError",          //0 (parser)
     "MahpackError",         //1 (parser)
@@ -110,9 +113,6 @@ String exceptions_type[4] = {"CANCEL", "FATAL", "ERROR", "WARNING"};
 
 // Mpoint *hash_pointers[HASH_MEM_SIZE] = {0};
 
-// StrList program_argvs = 0;
-// uint32 argvs_len = 0;
-
 // //=>list of imported modules path
 // StrList installed_modules = 0;
 // uint32 installed_modules_len = 0;
@@ -123,7 +123,7 @@ String exceptions_type[4] = {"CANCEL", "FATAL", "ERROR", "WARNING"};
 
 void DEF_init() {
   //=>init project_root
-  project_root = CALL_parent_path(stdin_source_path);
+  project_root = CALL_pwd();
   //=>init max_int ,max_float
   MAX_INT_LEN = INT_USED_BYTES * 2;
   MAX_FLOAT_LEN = (FLOAT_USED_BYTES * 2) - 2;

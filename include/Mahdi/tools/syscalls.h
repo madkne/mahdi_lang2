@@ -27,6 +27,8 @@ Boolean CALL_mkdir(String path, Boolean is_make_parents);
 uint32 CALL_rand(uint32 min, uint32 max);
 Boolean CALL_binary_copy(String src, String dst);
 String CALL_shell(String command);
+String CALL_pwd();
+
 #if WINDOWS_PLATFORM == true
 String CALL_reg_value(HKEY hkey, String path, String key);
 #endif

@@ -1,4 +1,6 @@
-package app1
+package myapp1
+
+
 func _bootup_(){
     t=5
     if(t==5 or t<5){
@@ -6,6 +8,6 @@ func _bootup_(){
     	t++
     }
     g,_=hello(t,(t+1)*0b0101^0xa)
-    myapp11 = myapp1(4,6.6)
-    s = tostr(myapp11)
+    myapp111 = myapp11(4,6.6)
+    s = tostr(myapp111)
 }

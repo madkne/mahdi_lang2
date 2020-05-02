@@ -9,6 +9,7 @@ void COM_print_struct(uint8 which);
 String COM_replace_ctrl_chars(String val);
 void COM_exit(int32 i);
 String COM_get_path_name_ext(String path, String *ext, Boolean must_ext);
+void * COM_alloc_memory(Longint size);
 // Boolean functions
 //******************************************
 Boolean BOOL_switch(Boolean b);
@@ -16,6 +17,8 @@ Boolean BOOL_switch_str(String b);
 // int32 functions
 //******************************************
 double I32_power(double base, int32 power);
+//******************************************
+void debug(const char *fmt, ...);
 /*
 void msg(String format, ...);
 

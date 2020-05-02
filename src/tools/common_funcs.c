@@ -78,6 +78,18 @@ double COM_calculate_period_time(Longint start_time, String *unit) {
   } else STR_init(&(*unit), "seconds");
   return time_taken;
 }
+
+//******************************************
+void * COM_alloc_memory(Longint size){
+  //=>get memory space by size
+  void * q = (Mvar *)malloc(size);
+  //=>if not have enough memory free space
+  if (q == 0){
+    EXP_set_errcode(NOT_MEMORY_ERRC);
+    EXP_print_error(0,"not_enough_memory",0,STR_from_Longint(size),0,"COM_alloc_memory");
+  }
+  return q;
+}
 //******************************************
 void COM_print_struct(uint8 which) {
 //   //=>print all nodes of imin struct (import instruction)
@@ -775,4 +787,13 @@ double I32_power(double base, int32 power) {
 //   return false;
 // }
 
-// //*************************************************************
+//*************************************************************
+void debug(const char *fmt, ...){
+  va_list argvs;
+  va_start(argvs,fmt);
+  if(is_programmer_debug>=1){
+    fmt = STR_append(fmt,"\n");
+    vprintf(fmt,argvs);
+  }
+  va_end(argvs);
+}

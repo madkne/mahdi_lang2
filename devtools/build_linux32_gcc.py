@@ -52,7 +52,7 @@ os.system("tput setaf 5") #set foreground pink
 cflags = "-I ../include -std=c99 -fmax-errors=2 -c " #-m32:for 32bits
 build_folder = "../linux32-release"
 obj_folder = "../tmp"
-scr_folder = "../src"
+src_folder = "../src"
 compiler = "gcc "
 is_error = 0
 logfile = "build_linux32_gcc_list.txt"
@@ -67,7 +67,7 @@ if os.path.exists(logfile):
 # for j in compfiles:
 #	print(compfiles)
 # ----------------------
-print("\t~~~~~MAHDI Build Tool (BY Python3) V 4.4~~~~~")
+print("\t~~~~~MAHDI Build Tool (BY Python3) V 4.5~~~~~")
 print("=== Start Building linux32 release of MAHDI Interpreter using GCC (C99) ....")
 # ----------------------init dirs
 # -----create docs dir
@@ -102,45 +102,47 @@ if os.path.exists(mahdi_exec):
 # ----------------------compile mahdi sources
 print("=== Start compiling source files [mahdi]...")
 sources = [
-    [scr_folder+"/main.c", scr_folder+"/main.c -o "+obj_folder+"/main.o"],
+    "main.c",
+    "tests.c",
     # [scr_folder+"/builder.c",scr_folder+"/builder.c -o "+obj_folder+"/builder.o"],
-    [scr_folder+"/mahdi_help.c",scr_folder+"/mahdi_help.c -o "+obj_folder+"/mahdi_help.o"],
+    "mahdi_help.c",
     # [scr_folder+"/mahdi_module.c",scr_folder+"/mahdi_module.c -o "+obj_folder+"/mahdi_module.o"],
-    [scr_folder+"/data_defined.c", scr_folder + "/data_defined.c -o "+obj_folder+"/data_defined.o"],
-    [scr_folder+"/exceptions.c",scr_folder+"/exceptions.c -o "+obj_folder+"/exceptions.o"],
+    "data_defined.c",
+    "exceptions.c",
     # [scr_folder+"/mahdi_debugger.c",scr_folder+"/mahdi_debugger.c -o "+obj_folder+"/mahdi_debugger.o"],
     # [scr_folder+"/mahdi_builtin.c",scr_folder+"/mahdi_builtin.c -o "+obj_folder+"/mahdi_builtin.o"],
-    [scr_folder+"/tools/common_funcs.c", scr_folder +"/tools/common_funcs.c -o "+obj_folder+"/common_funcs.o"],
-    [scr_folder+"/tools/console.c", scr_folder + "/tools/console.c -o "+obj_folder+"/console.o"],
-    [scr_folder+"/tools/strings.c", scr_folder + "/tools/strings.c -o "+obj_folder+"/strings.o"],
-    [scr_folder+"/tools/chars.c", scr_folder + "/tools/chars.c -o "+obj_folder+"/chars.o"],
-    [scr_folder+"/tools/lists.c", scr_folder + "/tools/lists.c -o "+obj_folder+"/lists.o"],
+    "tools/common_funcs.c",
+    "tools/console.c",
+    "tools/strings.c",
+    "tools/chars.c",
+    "tools/lists.c",
     # [scr_folder+"/tools/encoder.c", scr_folder +  "/tools/encoder.c -o "+obj_folder+"/encoder.o"],
-    [scr_folder+"/tools/utf8.c", scr_folder +"/tools/utf8.c -o "+obj_folder+"/utf8.o"],
-    [scr_folder+"/tools/syscalls.c", scr_folder + "/tools/syscalls.c -o "+obj_folder+"/syscalls.o"],
+    "tools/utf8.c",
+    "tools/syscalls.c",
     # [scr_folder+"/core/runkit.c",scr_folder+"/core/runkit.c -o "+obj_folder+"/runkit.o"],
     # [scr_folder+"/core/parser.c",scr_folder+"/core/parser.c -o "+obj_folder+"/parser.o"],
     # [scr_folder+"/core/importer.c",scr_folder+"/core/importer.c -o "+obj_folder+"/importer.o"],
     # [scr_folder+"/core/inheritance.c",scr_folder+"/core/inheritance.c -o "+obj_folder+"/inheritance.o"],    [scr_folder+"/core/starter.c",scr_folder+"/core/starter.c -o "+obj_folder+"/starter.o"],
     # [scr_folder+"/core/runmgr.c",scr_folder+"/core/runmgr.c -o "+obj_folder+"/runmgr.o"],
-    # [scr_folder+"/core/memory.c",scr_folder+"/core/memory.c -o "+obj_folder+"/memory.o"],
+    "core/memory.c",
     # [scr_folder+"/built_in/mpl_builtin.c",scr_folder+"/built_in/mpl_builtin.c -o "+obj_folder+"/mpl_builtin.o"],
     # [scr_folder+"/built_in/os_builtin.c",scr_folder+"/built_in/os_builtin.c -o "+obj_folder+"/os_builtin.o"],
     # [scr_folder+"/built_in/data_builtin.c",scr_folder+"/built_in/data_builtin.c -o "+obj_folder+"/data_builtin.o"],
     # [scr_folder+"/built_in/fs_builtin.c",scr_folder+"/built_in/fs_builtin.c -o "+obj_folder+"/fs_builtin.o"],
 
-    # [scr_folder+"/modules/sqlite_interface.c",scr_folder+"/modules/sqlite_interface.c -o "+obj_folder+"/sqlite_interface.o"]
 ]
 for i in range(0, len(sources), 1):
-    ind = sources[i]
-    mtime = os.path.getmtime(ind[0])
+    # init vars
+    src_path = os.path.join(src_folder,sources[i])
+    obj_command = src_path + " -o " + os.path.join(obj_folder,os.path.basename(src_path).split('.')[0] + ".o")
+    mtime = os.path.getmtime(src_path)
     if len(compfiles)==len(sources) and float(compfiles[i]) == mtime:
-        print("=> Before Compiled: "+ind[0])
+        print("=> Before Compiled: "+src_path)
     else:
         # print(mtime,compfiles[i]);
-        is_error = os.system(compiler+cflags+ind[1])
-        os.system("tput setaf 4") #set foreground blue
-        print("=> Compiled: "+ind[0])
+        is_error = os.system(compiler + cflags + obj_command)
+        os.system("tput setaf 5") #set foreground pink
+        print("=> Compiled: "+src_path)
         # print('compile:',is_error)
         if is_error != 0:
             os.system("tput setaf 1") #set foreground red
@@ -188,8 +190,10 @@ else:
     print("=== Running mahdi executable ...")
     print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_")
     os.system("tput sgr0") #reset colors
-    os.system("../linux32-release/bin/mahdi -h")
-    # os.system("../linux32-release/bin/mahdi myapp1")
+    # os.system("../linux32-release/bin/mahdi -h")
+    os.chdir("../samples/myapp1")
+    os.system("../../linux32-release/bin/mahdi myapp1")
+    os.chdir("../../devtools")
     #os.system("../win32-release/mpl.exe ../mprog.mpl init my_project");
     #os.system("../win32-release/mpl.exe -h keywords null");
     # os.system("dir");

@@ -9,7 +9,7 @@
 clock_t AppStartedClock;
 String AppStartedTime;
 String project_root;
-String stdin_source_path;
+String program_package;
 String interpreter_level;
 String interpreter_path;
 String interpreter_tmp_path;
@@ -23,10 +23,12 @@ String os_tmp_dir;
 uint32 BufferSize;
 String hostname;
 String os_version;
-uint64 os_total_memory;
-uint64 os_total_disk;
+Longint os_total_memory;
+Longint os_total_disk;
 Boolean is_real_mahdi;
 String program_command;
+StrList program_argvs;
+uint32 argvs_len;
 //******************************config values
 uint8 is_programmer_debug;
 // String logfile_path;
@@ -68,8 +70,6 @@ String exceptions_type[4];
 // uint8 words_splitter[16];
 // uint8 sub_types[6];
 // String control_chars[5];
-// StrList program_argvs;
-// uint32 argvs_len;
 // StrList installed_modules;
 // uint32 installed_modules_len;
 
@@ -83,70 +83,67 @@ typedef struct exceptions_list_struct {
 
   struct exceptions_list_struct *next;
 } exli;
-// // //****************************entry_table struct
+//****************************virtual memory
+//runtime
+typedef struct var_memory_struct {
+    Longint id;
+    Longint pointer_id;
+    Longint package_id;
+    Longint block_id;//(0:global vars or class vars or func direct vars)
+    Longint func_id;//(0:global vars or class vars)
+    Longint func_index;//(for recursion)
+    Longint lambda_id;
+    Longint lambda_index;//(for lambda threading and nesting lambdas)
+    Longint class_id;//(0:global vars in outer or inner of global functions)
+    Longint class_index;//(for loop same init classes)
+    Longint type_id;
+    Boolean is_private;
+    uint8 flag;
+    String  name;
+  struct var_memory_struct *next;
+} Mvar;
+// ----------------------------------
+typedef struct pointer_memory_struct {
+    Longint id;
+    uint8 type;
+    //('i':int , 'f':float , 'h':huge , 's':string , 'u':utf8 , 'b':boolean , 'p':Pointer To Mpoint , 'v':Pointer To Mvar )
+    String raw;//(for int,float,huge,string,utf8)
+    Boolean bool;//(for boolean)
+    LintList items;//(for mpoint,mvar)
+    StrList keys; //(for mpoint)
+    Longint items_len;
+    struct pointer_memory_struct *next;
+} Mpoint;
+//static
+Mpoint *hash_pointers[HASH_MEM_SIZE];
+Mpoint *hash_pointers_end[HASH_MEM_SIZE];
+Longint hash_pointers_len[HASH_MEM_SIZE];
+
+//****************************entry_table struct
 struct entry_table_struct {
     exli *exli_start;
     exli *exli_end;
     Longint exceptions_count;
 
+    Mvar *var_memory_start;
+    Mvar *var_memory_end;
+    Mpoint *pointer_memory_start;
+    Mpoint *pointer_memory_end;
+    Longint var_mem_id;
+    Longint var_mem_len;
+    Longint pointer_mem_id;
+    Longint pointer_mem_len;
 
-//   imin *import_start;
-//   imin *import_end;
-//   Longint import_id;
-//   uint32 import_active_count;
-
-//   coin *config_start;
-//   coin *config_end;
-//   Longint config_id;
-
-//   soco *soco_main_start;
-//   soco *soco_main_end;
-//   String current_source_path;
-//   Longint soco_main_count;
-
-//   soco *soco_tokens_start;
-//   soco *soco_tokens_end;
-//   Longint soco_tokens_count;
-
-//   utst *utst_start;
-//   utst *utst_end;
-//   Longint utf8_strings_id;
-
-
-
-//   Boolean debug_is_run;
-//   Boolean debug_is_next;
-
-//   Mvar *var_memory_start;
-//   Mvar *var_memory_end;
-//   Mpoint *pointer_memory_start;
-//   Mpoint *pointer_memory_end;
-//   Longint var_mem_id;
-//   Longint var_mem_len;
-//   Longint pointer_mem_id;
-//   Longint pointer_mem_len;
-
-//   int8 next_break_inst;
-//   uint32 break_count;
-
-//   rrss current;
-//   //=>parsing global vars
-//   Boolean need_inheritance;
-//   //=>runtime global vars
-//   String Rsrc;
-//   Longint return_fin;
-//   uint32 Rline;
-//   Boolean is_stop_APP_controller, is_next_inst_running, is_occur_error_exception;
-//   //=>list of all source paths
-//   StrList sources_list;
-//   uint32 sources_len;
-
-//   StrList post_short_alloc;
-//   uint32 post_short_alloc_len;
 
 };
 struct entry_table_struct entry_table;
 
+
+//*************************************************************
+//*********************public functions************************
+//*************************************************************
+
+void DEF_init();
 
 
 #endif //__MAHDI_DATA_DEFINED_H

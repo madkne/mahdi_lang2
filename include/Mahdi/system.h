@@ -14,6 +14,8 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <limits.h>
+#include <stdarg.h>
+#include <unistd.h>
 //---------------------------------platform based C functions
 #if LINUX_PLATFORM == 1
 #include <linux/limits.h>
@@ -35,6 +37,7 @@
 // #include "mahdi_builtin.h"
 // #include "mahdi_module.h"
 #include "mahdi_help.h"
+#include "tests.h"
 // #include "debugger.h"
 // #include "builder.h"
 //---------------------------------core functions
@@ -45,7 +48,7 @@
 
 // #include "core/runkit.h"
 // #include "core/runmgr.h"
-// #include "core/memory.h"
+#include "core/memory.h"
 //---------------------------------tools functions
 #include "tools/common_funcs.h"
 #include "tools/strings.h"

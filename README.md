@@ -67,6 +67,7 @@ MAHDI Language Features
 - [ ] support module os syscalls
 - [ ] support create executable file from program
 - [ ] support cross-platform gui kit
+- [ ] support for function recursions
 
 MAHDI 'Hello World' Program
 --------

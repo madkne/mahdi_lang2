@@ -6,10 +6,11 @@ TODO
  - [x] defnie mahdi help
  - [x] init exceptions
  - [x] get first build
- - [ ] get argvs and analyze options and file path
- - [ ] init basic interpreter variables
- - [ ] init data defined
- - [ ] init virtual memory(vm)
+ - [x] get argvs and analyze options and file path
+ - [x] init basic interpreter variables
+ - [x] init data defined
+ - [x] init virtual memory(vm)
+ - [ ] browse and find all files of program package
  - [ ] init built in functions
  - [ ] import main source from stdin
  - [ ] reading source file as utf8

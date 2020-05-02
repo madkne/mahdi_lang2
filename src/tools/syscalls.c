@@ -238,7 +238,7 @@ Boolean CALL_binary_copy(String src, String dst) {
 }
 //******************************************
 String CALL_shell(String command) {
-  //=>INIT VARS
+  //=>init vars
   String ret = 0;
   FILE *fp;
   uint8 line[1035];
@@ -256,6 +256,15 @@ String CALL_shell(String command) {
   //=>close file
   pclose(fp);
   return ret;
+}
+//******************************************
+String CALL_pwd(){
+  //=>init vars
+  uint8 pwd[PATH_MAX];
+  //=>get current working directory path
+  return getcwd(pwd,sizeof(pwd));
+  //=>if failed to get pwd path
+  // return 0;
 }
 //******************************************
 #if WINDOWS_PLATFORM == true

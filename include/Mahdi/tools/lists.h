@@ -7,17 +7,17 @@
 //************************************************************************
 #define I32ArraySize(x) (sizeof(x)/sizeof(int32))
 // Longint list functions
-Longint LLIST_delete_first(LintList *s, uint32 len);
-void LLIST_append(LintList *s, uint32 len, Longint n);
-uint32 LLIST_join(LintList *s, LintList a1, uint32 a1_len, LintList a2, uint32 a2_len);
-void LLIST_init(LintList *s, LintList val, uint32 len);
-String LLIST_print(LintList s, uint32 len);
-void ILIST_append(IntList *s, int32 s1, uint32 len);
+Longint LLIST_delete_first(LintList *s, Longint len);
+void LLIST_append(LintList *s, Longint len, Longint n);
+uint32 LLIST_join(LintList *s, LintList a1, Longint a1_len, LintList a2, Longint a2_len);
+void LLIST_init(LintList *s, LintList val, Longint len);
+String LLIST_print(LintList s, Longint len);
 //************************************************************************
 //************************************************************************
 //Int32 List Functions
 void ILIST_init(IntList *s, IntList val, uint32 len);
 void ILIST_reset(IntList s, uint32 len);
+void ILIST_append(IntList *s, int32 s1, uint32 len);
 String ILIST_print(IntList s, uint32 len);
 Boolean ILIST_search(IntList s,int32 s2, uint32 len);
 

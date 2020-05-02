@@ -3,7 +3,7 @@
 
 // Longint list functions
 //******************************************
-Longint LLIST_delete_first(LintList *s, uint32 len) {
+Longint LLIST_delete_first(LintList *s, Longint len) {
   if (len == 0) {
     (*s) = 0;
     return 0;
@@ -24,7 +24,7 @@ Longint LLIST_delete_first(LintList *s, uint32 len) {
 }
 
 //******************************************
-void LLIST_append(LintList *s, uint32 len, Longint n) {
+void LLIST_append(LintList *s, Longint len, Longint n) {
   LintList tmp = 0;
   LLIST_init(&tmp, *s, len);
   //  free (*s);
@@ -37,7 +37,7 @@ void LLIST_append(LintList *s, uint32 len, Longint n) {
 }
 
 //*************************************************************
-uint32 LLIST_join(LintList *s, LintList a1, uint32 a1_len, LintList a2, uint32 a2_len) {
+uint32 LLIST_join(LintList *s, LintList a1, Longint a1_len, LintList a2, Longint a2_len) {
   //if(s!=0)free(*s);
   uint32 ind = 0;
   (*s) = (LintList) malloc((a1_len + a2_len) * sizeof(LintList));
@@ -52,7 +52,7 @@ uint32 LLIST_join(LintList *s, LintList a1, uint32 a1_len, LintList a2, uint32 a
 }
 
 //*************************************************************
-void LLIST_init(LintList *s, LintList val, uint32 len) {
+void LLIST_init(LintList *s, LintList val, Longint len) {
   if (len == 0) {
     (*s) = 0;
     return;
@@ -65,7 +65,7 @@ void LLIST_init(LintList *s, LintList val, uint32 len) {
 }
 
 //*************************************************************
-String LLIST_print(LintList s, uint32 len) {
+String LLIST_print(LintList s, Longint len) {
   if (len == 0) return "[NULL]";
   String ret = 0;
   ret = CH_append(ret, '{');
