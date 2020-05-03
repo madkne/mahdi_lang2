@@ -12,8 +12,9 @@ TODO
  - [x] init virtual memory(vm)
  - [x] init built in functions
  - [x] browse and find all files of program package
- - [ ] reading source file as utf8
- - [ ] remove comments and convert utf8 to ascii
+ - [x] reading source file as utf8
+ - [x] remove comments and convert utf8 to ascii
+ - [x] import all package source files
  - [ ] extract tokens
  - [ ] parsing tokens
  - [ ] get the other imports from main source file

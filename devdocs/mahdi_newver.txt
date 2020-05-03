@@ -230,16 +230,17 @@ t="Amin";j=56;
 s="progress of {t} : {j+1}\%";
 s1="hello {type1(56)}"
 -----------------loop
-loop([section1];[section2];[section3])
+loop([section1?];[section2];[section3?])
 [section1] : just run in first time (for define vars)
 [section2] : run every time and decide that loop be continue (for check vars) [is required]
 [section3] : run every time except first time (for change vars)
 sample:
+- loop(setenv();i<10)
 - loop(i=0,u='';i<10,u!="Hello";i++)
 - loop(u:str='',b='',i=0;u:uu;i+=5,u[0]+=" ") //uu=[["x","v"],["h","i"]] browse uu array => u=["x ","v"]
 - loop(;i<5) or loop(;i<5;)
-- loop(h=get1(),def k=0;h<get2(k);k++,h++)
-- loop(u='',def b='',i=0;u!="Hi")
+- loop(h=get1(),k=0;h<get2(k);k++,h++)
+- loop(u='',b='',i=0;u!="Hi")
 u:num[];
 loop(j=0;j:u) //foreach an array
 -----------------break,next
@@ -302,7 +303,7 @@ sam1(jj="er",j=7.656) OR sam1(34,"hello")
 //call static function
 pkg.main(); OR mypkg1=pkg();mypkg1.main();
 //get public const class vars
-def f=pkg::ERRORSTATE; //f=4
+f=pkg::ERRORSTATE; //f=4
 //call class function
 mypkg1=pkg();mypkg1.sub() OR pkg().sub() 
 def z=pkg1+pkg2 //if defined _plus_(p:class) in pkg1
@@ -310,6 +311,8 @@ def g,s=sam()
 g,s=sam() //=>ERR:if sam() return not two values
 j=0;j=f("g",6.8)[1]  //=>j get 2nd returned value
 j,_,i = f() //return three values but need just first and three values!
+os.tmpdir() //call from module class
+encoding.json.encode([4,6]) //call method a class from every package
 -----------------short condition
 d=rt>3?'hi':'bye'
 fg = (rt>3 and rt<5)? 34 : -1

@@ -17,10 +17,10 @@ void EXP_init() {
 	//ImportError
   EXP_define(1, FATAL_ID, "not_import_sources", ImportError,
                        "can't find package sources of '!1@1!'");
-  // EXP_define(1, ERROR_ID, "bad_place_using_utf8", ImportError,
-  //                      "using UTF-8 in bad place or bad character in `!1@1!`");
-  // EXP_define(2, ERROR_ID, "not_open_file", ImportError, "can't open file '!1@1!'");
-  // EXP_define(3, ERROR_ID, "file_not_support_utf8", ImportError, "'!1@1!' file not support UTF-8");
+  EXP_define(2, ERROR_ID, "bad_place_using_utf8", ImportError,
+                       "using UTF-8 in bad place or bad character in `!1@1!`");
+  EXP_define(3, ERROR_ID, "not_open_file", ImportError, "can't open file '!1@1!'");
+  EXP_define(4, ERROR_ID, "file_not_support_utf8", ImportError, "'!1@1!' file not support UTF-8");
   // EXP_define(4, ERROR_ID, "import_syntax_error", ImportError,
   //                      "A syntax error occurs for import instruction");
   // EXP_define(5, ERROR_ID, "import_not_support_protocol", ImportError,

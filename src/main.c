@@ -77,11 +77,16 @@ Boolean INTR_start() {
   if(! IMPORT_find_package_sources()){
     return false;
   }
+  //-----------------------import package sources
+  STR_init(&interpreter_level, "import");
+  if(! IMPORT_start()){
+    return false;
+  }
   //-----------------------parsing source codes
   // STR_init(&interpreter_level, "parse");
-  // Boolean ret0 = IMPORT_run();
-  // //printf("VVVVVV:%i\n",ret0);
-  // if (!ret0) return false;
+  // if(! IMPORT_()){
+  //   return false;
+  // }
   // //-----------------------solve inherits packages
 	// if(entry_table.need_inheritance){
 	// 	STR_init(&interpreter_level, "inherit");

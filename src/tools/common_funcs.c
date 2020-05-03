@@ -93,6 +93,34 @@ void * COM_alloc_memory(Longint size){
 }
 //******************************************
 void COM_print_struct(uint8 which) {
+    
+  //=>print all nodes of utst struct (utf8 strings)
+  if (which == 0 || which == PRINT_UTF8_ST) {
+    utst *tmp1 = entry_table.utst_start;
+    if (tmp1 == 0) return;
+    printf("=====Print utf8_strings_struct :\n");
+    for (;;) {
+      printf("id:%li,line:%i,max_bytes:%i, ", tmp1->id, tmp1->line, tmp1->max_bytes_per_char);
+      USTR_print("string", tmp1->utf8_string, true);
+      tmp1 = tmp1->next;
+      if (tmp1 == 0) break;
+    }
+    printf("=====End printed\n");
+  } 
+  //=>print all nodes of soco struct (source code)
+  if (which == 0 || which == PRINT_MAIN_SOURCE_ST) {
+    soco *tmp1 = entry_table.soco_main_start;
+    if (tmp1 == 0) return;
+    printf("=====Print source_code_struct :\n");
+    for (;;) {
+      printf("line:%i,src_id:%i,code:%s\n", tmp1->line,tmp1->source_id, tmp1->code);
+      tmp1 = tmp1->next;
+      if (tmp1 == 0) break;
+    }
+    printf("=====End printed\n");
+  } 
+
+
   //   //=>print all nodes of imin struct (import instruction)
   //   if (which == 0 || which == PRINT_IMPORT_ST) {
   //     imin *tmp1 = entry_table.import_start;
@@ -152,31 +180,6 @@ void COM_print_struct(uint8 which) {
   // //     }
   // //     printf("=====End printed\n");
   //   // } 
-  //   //=>print all nodes of utst struct (utf8 strings)
-  //   if (which == 0 || which == PRINT_UTF8_ST) {
-  //     utst *tmp1 = entry_table.utst_start;
-  //     if (tmp1 == 0) return;
-  //     printf("=====Print utf8_strings_struct :\n");
-  //     for (;;) {
-  //       printf("id:%li,line:%i,max_bytes:%i, ", tmp1->id, tmp1->line, tmp1->max_bytes_per_char);
-  //       USTR_print("string", tmp1->utf8_string, true);
-  //       tmp1 = tmp1->next;
-  //       if (tmp1 == 0) break;
-  //     }
-  //     printf("=====End printed\n");
-  //   } 
-  //   //=>print all nodes of soco struct (source code)
-  //   else if (which == 0 || which == PRINT_MAIN_SOURCE_ST) {
-  //     soco *tmp1 = entry_table.soco_main_start;
-  //     if (tmp1 == 0) return;
-  //     printf("=====Print source_code_struct :\n");
-  //     for (;;) {
-  //       printf("line:%i,code:%s\n", tmp1->line, tmp1->code);
-  //       tmp1 = tmp1->next;
-  //       if (tmp1 == 0) break;
-  //     }
-  //     printf("=====End printed\n");
-  //   } 
   //   //=>print all nodes of soco struct (tokens)
   //   else if (which == 0 || which == PRINT_TOKENS_SOURCE_ST) {
   //     soco *tmp1 = entry_table.soco_tokens_start;
@@ -453,6 +456,18 @@ double I32_power(double base, int32 power) {
 String PATH_join(String dir,String filename){
   return STR_multi_append(dir,os_separator,filename,0);
 }
+//******************************************
+String PATH_extract_extension(String path){
+  //=>init vars
+  StrList segs = 0;
+  //=>split by dot (.)
+  uint32 segs_len = CH_split(path,'.',&segs,true);
+  //=>get last item as extension
+  return segs[segs_len-1];
+
+}
+
+
 
 //*************************************************************
 // void print_vaar(vaar_en s) {

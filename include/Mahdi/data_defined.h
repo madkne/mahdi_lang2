@@ -119,13 +119,47 @@ Mpoint *hash_pointers_end[HASH_MEM_SIZE];
 Longint hash_pointers_len[HASH_MEM_SIZE];
 //****************************built_in_funcs struct
 typedef struct built_in_funcs_struct {
-  uint32 id;
-  String func_name;
-  String params;
-  uint8 params_len;
+    uint32 id;
+    String func_name;
+    String params;
+    uint8 params_len;
 
-  struct built_in_funcs_struct *next;
+    struct built_in_funcs_struct *next;
 } bifs;
+//****************************source_code struct
+typedef struct source_code_struct {
+    uint32 line;
+    String code;
+
+    Longint source_id;
+
+    struct source_code_struct *next;
+} soco;
+//****************************utf8_strings struct
+/**
+ * store utf8 strings like str r='سلام' => str s='!UTF8!'
+ */
+typedef struct utf8_strings_struct {
+    Longint id;
+    uint32 line;
+    UString utf8_string;
+    uint8 max_bytes_per_char;
+
+    struct utf8_strings_struct *next;
+} utst;
+//****************************import struct
+typedef struct import_source_struct {
+    Longint id;
+    uint8 type; //mod(m)|pack(p)|file(f)
+    String name; //required
+    String path; //required
+    uint8 err_code;
+
+    uint32 line;
+    Longint source_id; //=>id of parent imin
+
+    struct import_source_struct *next;
+} imso;
 //****************************entry_table struct
 struct entry_table_struct {
     // exceptions struct
@@ -149,6 +183,23 @@ struct entry_table_struct {
     String program_package;
     StrList program_sources;
     uint32 program_sources_len;
+    // program source codes
+    soco *soco_main_start;
+    soco *soco_main_end;
+    String current_source_path;
+    Longint soco_main_count;
+    // program source tokens
+    soco *soco_tokens_start;
+    soco *soco_tokens_end;
+    Longint soco_tokens_count;
+    // utf-8 strings
+    utst *utst_start;
+    utst *utst_end;
+    Longint utf8_strings_id;
+    // import sources
+    imso *imso_start;
+    imso *imso_end;
+    Longint import_id;
 };
 struct entry_table_struct entry_table;
 
@@ -159,5 +210,20 @@ struct entry_table_struct entry_table;
 
 void DEF_init();
 
+//*************************************************************
+//*******************source_code functions*********************
+//*************************************************************
+
+void _soco_append(uint8 type, uint32 line,String code,Longint source_id);
+void _soco_clear(uint8 type);
+soco _soco_get(uint8 type, uint32 ind);
+
+//*************************************************************
+//******************utf8_strings functions*********************
+//*************************************************************
+
+void _utst_append(utst s);
+Longint _utst_add(uint32 line, UString str, uint8 max_bytes);
+utst _utst_get_by_label(String s);
 
 #endif //__MAHDI_DATA_DEFINED_H

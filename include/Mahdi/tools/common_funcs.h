@@ -23,6 +23,7 @@ double I32_power(double base, int32 power);
 // path functions
 //******************************************
 String PATH_join(String dir,String filename);
+String PATH_extract_extension(String path);
 
 
 void debug(const char *fmt, ...);

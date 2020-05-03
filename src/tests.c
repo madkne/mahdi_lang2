@@ -6,7 +6,11 @@
 void TEST_main(){
 
     // debug("hello world\n");
-
+  //=>if programmer debug is enabled, then display main source and utf8 structures
+  if (is_programmer_debug >= 3){
+    COM_print_struct(PRINT_MAIN_SOURCE_ST);
+    COM_print_struct(PRINT_UTF8_ST);
+  }
 
   //  String ss = 0;
   //  str_init(&ss, "Hello Amin.");
