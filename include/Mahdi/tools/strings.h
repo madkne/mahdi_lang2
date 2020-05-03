@@ -46,7 +46,7 @@ String STR_from_int64(int64 x);
 Boolean STR_to_bool(String s);
 double STR_to_double(String s);
 String STR_from_double(double n, uint8 afterpoint);
-String STR_multi_append(String s, String s1, String s2, String s3, String s4, String s5);
+String STR_multi_append(String s, ...);
 void STR_to_utf8(UString *ret, String val);
 String STR_from_const(const char s[]);
 Boolean STR_has_suffix(String s, String find);

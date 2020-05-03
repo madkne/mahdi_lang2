@@ -54,7 +54,7 @@ String CALL_abspath(String path) {
   if(path==0)return 0;
   #if LINUX_PLATFORM == 1
     char abs_path[PATH_MAX+1];
-    char *stat=realpath(path,abs_path);
+    String stat=realpath(path,abs_path);
     // printf("abspath:%s=>%s(%i,%i,%i)\n",path,abs_path,stat,errno,ENOENT);
     if(errno==0)return STR_from_const(abs_path);
     //=>has an error
@@ -259,12 +259,63 @@ String CALL_shell(String command) {
 }
 //******************************************
 String CALL_pwd(){
+  #if WINDOWS_PLATFORM == true
+    //TODO:
+  #elif LINUX_PLATFORM == true
+    //=>init vars
+    uint8 pwd[PATH_MAX+1];
+    //=>get current working directory path
+    String pwd_str = getcwd(pwd,(PATH_MAX+1)*sizeof(uint8));
+    if(pwd_str == NULL) return 0;
+    return CALL_abspath(pwd_str);
+  #endif
+
+}
+//******************************************
+/**
+ * get a path string and a mode char and return list of files or directories or both
+ * @param String path
+ * @param uint8 mode = 'f'(files)|'d'(dirs)|'a'(all)
+ * @param Strlist* list
+ * @return uint32
+ * @author madkne
+ * @since 2020.5.2
+ * @version 1.0
+ */ 
+uint32 CALL_list_dir(String path,uint8 mode,StrList *list){
   //=>init vars
-  uint8 pwd[PATH_MAX];
-  //=>get current working directory path
-  return getcwd(pwd,sizeof(pwd));
-  //=>if failed to get pwd path
-  // return 0;
+  uint32 len = 0;
+  (*list) = 0;
+  #if WINDOWS_PLATFORM == true
+    //TODO:
+  #elif LINUX_PLATFORM == true
+    //=>pointer for directory entry
+    struct dirent *de;
+    //=>open dir and get a pointer of it
+    // debug("path:%s",path);
+    DIR *dr = opendir(path);
+    //=>check if directory pointer is empty
+    if(dr == NULL){
+      // debug("not");
+      return 0;
+    }
+    //=>iterate directory items
+    while((de = readdir(dr)) != NULL){
+      //=>check for mode file
+      if(mode == 'f' && de->d_type != DT_REG) continue;
+      //=>check for mode dir
+      if(mode == 'd' && de->d_type != DT_DIR) continue;
+      //=>check for '.','..' directories
+      if(mode == 'd' && (STR_CH_equal(de->d_name,'.') || STR_equal(de->d_name,".."))) continue;
+      // append filename to list
+      SLIST_append(list,de->d_name,len++);
+      // debug("filename:%s(%i):%i[%i]",de->d_name,de->d_type,de->d_off,de->d_reclen);
+    }
+    //=>close directory
+    closedir(dr);
+  #endif
+
+  return len;
 }
 //******************************************
 #if WINDOWS_PLATFORM == true

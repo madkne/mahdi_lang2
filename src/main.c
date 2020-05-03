@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
   //=>if argv not an option, check for exist a file 
   else {
     //=>get argv as program package name
-    STR_init(&program_package, argv[1]);
+    STR_init(&entry_table.program_package, argv[1]);
     //=>store arguments of program
     if (argc > 2){
       for (int ii = 2; ii < argc; ++ii)
@@ -72,7 +72,12 @@ Boolean INTR_start() {
   //-----------------------init interpreter
   STR_init(&interpreter_level, "init");
   INTR_init();
-  // //-----------------------parsing source codes
+  //-----------------------find package sources
+  STR_init(&interpreter_level, "find");
+  if(! IMPORT_find_package_sources()){
+    return false;
+  }
+  //-----------------------parsing source codes
   // STR_init(&interpreter_level, "parse");
   // Boolean ret0 = IMPORT_run();
   // //printf("VVVVVV:%i\n",ret0);
@@ -83,19 +88,7 @@ Boolean INTR_start() {
 	// 	Boolean ret1 =INHERIT_run();
   //   if (!ret1) return false;
 	// }
-  // //=>if programmer debug is enabled, then show all structs
-  // if(is_programmer_debug>=2){
-  //   COM_print_struct(PRINT_UTF8_ST);
-  //   COM_print_struct(PRINT_IMPORT_ST);
-  //   COM_print_struct(PRINT_CONFIG_ST);
-  //   COM_print_struct(PRINT_PACK_ST);
-  //   COM_print_struct(PRINT_FUNC_ST);
-  //   COM_print_struct(PRINT_DATA_TYPES_ST);
-  //   COM_print_struct(PRINT_STRU_ST);
-  //   COM_print_struct(PRINT_INSTRU_ST);
-  //   COM_print_struct(PRINT_FUNC_PACK_PARAMS_ST);
-  //   COM_print_struct(PRINT_MODULE_PACKFUNCS_ST);
-  // }
+  // TEST_inheritance();
   // //-----------------------meaning&running instructions
   // STR_init(&interpreter_level, "runtime");
   // Boolean ret3 = APP_start();
@@ -116,9 +109,7 @@ void INTR_init() {
   //=>init virtual memory
   VM_init();
   //=>init built-in functions
-  // BUILT_init();
-  // //=>init importer
-  // IMPORT_init();
+  BUILT_init();
   //********************
   //get_basic_system_info()
 }

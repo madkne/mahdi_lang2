@@ -10,9 +10,8 @@ TODO
  - [x] init basic interpreter variables
  - [x] init data defined
  - [x] init virtual memory(vm)
- - [ ] browse and find all files of program package
- - [ ] init built in functions
- - [ ] import main source from stdin
+ - [x] init built in functions
+ - [x] browse and find all files of program package
  - [ ] reading source file as utf8
  - [ ] remove comments and convert utf8 to ascii
  - [ ] extract tokens

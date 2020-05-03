@@ -10,10 +10,26 @@ void EXP_init() {
   //CommandError
   EXP_define(1, FATAL_ID, "bad_exit", CommandError, "returned 1 exit status");
   EXP_define(2, ERROR_ID, "unknown_opt", CommandError, "unknown option '!1@1!'");
-  EXP_define(3, FATAL_ID, "not_exist_pack", CommandError, "can't find package '!1@1!',No such file.");
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   //OSError
   EXP_define(1, WARNING_ID, "not_enough_memory", OSError, "not enough memory to allocate '!1@1!' bytes");
+  //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+	//ImportError
+  EXP_define(1, FATAL_ID, "not_import_sources", ImportError,
+                       "can't find package sources of '!1@1!'");
+  // EXP_define(1, ERROR_ID, "bad_place_using_utf8", ImportError,
+  //                      "using UTF-8 in bad place or bad character in `!1@1!`");
+  // EXP_define(2, ERROR_ID, "not_open_file", ImportError, "can't open file '!1@1!'");
+  // EXP_define(3, ERROR_ID, "file_not_support_utf8", ImportError, "'!1@1!' file not support UTF-8");
+  // EXP_define(4, ERROR_ID, "import_syntax_error", ImportError,
+  //                      "A syntax error occurs for import instruction");
+  // EXP_define(5, ERROR_ID, "import_not_support_protocol", ImportError,
+  //                      "not support the protocol in this path '!1@1!' import instruction");
+  // EXP_define(6, ERROR_ID, "can_not_load_module", ImportError, "can not load a module in '!1@1!' path");
+  // EXP_define(7,ERROR_ID,"not_support_module",
+  //                      ImportError,
+  //                      "mahdi not support '!1@1!' as a module in '!2@2!' path");
+  
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   //DebuggerError
   // EXP_define(1, ERROR_ID, "not_enough_params", DebuggerError, "your input has not enough parameters");
@@ -34,20 +50,6 @@ void EXP_init() {
   //                      DebuggerError,
   //                      "'!1@1!' as a variable in current line is undefined");
   // EXP_define(8, ERROR_ID, "can_not_run", DebuggerError, "line '!1@1!' completed and could not run again!");
-  // //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-	// //ImportError
-  // EXP_define(1, ERROR_ID, "bad_place_using_utf8", ImportError,
-  //                      "using UTF-8 in bad place or bad character in `!1@1!`");
-  // EXP_define(2, ERROR_ID, "not_open_file", ImportError, "can't open file '!1@1!'");
-  // EXP_define(3, ERROR_ID, "file_not_support_utf8", ImportError, "'!1@1!' file not support UTF-8");
-  // EXP_define(4, ERROR_ID, "import_syntax_error", ImportError,
-  //                      "A syntax error occurs for import instruction");
-  // EXP_define(5, ERROR_ID, "import_not_support_protocol", ImportError,
-  //                      "not support the protocol in this path '!1@1!' import instruction");
-  // EXP_define(6, ERROR_ID, "can_not_load_module", ImportError, "can not load a module in '!1@1!' path");
-  // EXP_define(7,ERROR_ID,"not_support_module",
-  //                      ImportError,
-  //                      "mahdi not support '!1@1!' as a module in '!2@2!' path");
   // //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 	// //InterruptedError
   // EXP_define(1, ERROR_ID, "zero_division", InterruptedError, "division by zero in '!1@1!' expression");

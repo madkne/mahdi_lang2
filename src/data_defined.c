@@ -4,9 +4,7 @@
 
 String interpreter_level = 0;
 
-String project_root = 0;
-
-String program_package = 0;
+String program_root = 0;
 
 String main_source_name = 0;
 
@@ -122,8 +120,8 @@ String exceptions_type[4] = {"CANCEL", "FATAL", "ERROR", "WARNING"};
 //*************************************************************
 
 void DEF_init() {
-  //=>init project_root
-  project_root = CALL_pwd();
+  //=>init program root directory
+  program_root = CALL_pwd();
   //=>init max_int ,max_float
   MAX_INT_LEN = INT_USED_BYTES * 2;
   MAX_FLOAT_LEN = (FLOAT_USED_BYTES * 2) - 2;
@@ -133,14 +131,17 @@ void DEF_init() {
   //=>if main mahdi interpreter, not app host!
   if (is_real_mahdi) {
     //=>get tmp dir path of mahdi interpreter
-    interpreter_tmp_path = STR_multi_append(COM_get_Mahdi_dir_path(), os_separator, "tmp", os_separator, 0, 0);
+    interpreter_tmp_path = PATH_join(COM_get_Mahdi_dir_path(),"tmp");
     //=>check for exist tmp dir of mahdi interpreter
-    if (fopen(STR_append(interpreter_tmp_path, "TMPDIR"), "r") == NULL) {
+    if (fopen(PATH_join(interpreter_tmp_path, "TMPDIR"), "r") == NULL) {
       CALL_mkdir(interpreter_tmp_path,true);
-      fopen(STR_append(interpreter_tmp_path, "TMPDIR"), "w");
+      fopen(PATH_join(interpreter_tmp_path, "TMPDIR"), "w");
     }
   }
-//   // printf("fffff:%s\n%s\n%s\n",interpreter_path,interpreter_tmp_path,project_root);
+  //=>init program package sources
+  entry_table.program_sources = 0;
+  entry_table.program_sources_len = 0;
+  // debug("fffff:%s\n%s\n%s\n",interpreter_path,interpreter_tmp_path,project_root);
 //   //=>init mahdi_modules_instance
 //   for (uint32 i = 0; i < max_mahdi_modules_instance_len; i++) {
 //     mahdi_modules_instance[i] = 0;

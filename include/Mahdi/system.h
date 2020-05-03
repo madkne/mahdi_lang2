@@ -15,13 +15,14 @@
 #include <sys/stat.h>
 #include <limits.h>
 #include <stdarg.h>
-#include <unistd.h>
 //---------------------------------platform based C functions
 #if LINUX_PLATFORM == 1
 #include <linux/limits.h>
 #include <stdint.h>
 #include <errno.h>
 #include <dlfcn.h>
+#include <dirent.h>
+#include <unistd.h>
 #elif WINDOWS_PLATFORM == 1
 #include <ctype.h>
 #include <stdint.h>
@@ -34,15 +35,15 @@
 #include "data_defined.h"
 //---------------------------------normal functions
 #include "exceptions.h"
-// #include "mahdi_builtin.h"
+#include "mahdi_builtin.h"
 // #include "mahdi_module.h"
 #include "mahdi_help.h"
 #include "tests.h"
 // #include "debugger.h"
 // #include "builder.h"
 //---------------------------------core functions
-// #include "core/importer.h"
-// #include "core/parser.h"
+#include "core/importer.h"
+#include "core/parser.h"
 // #include "core/inheritance.h"
 // #include "core/starter.h"
 

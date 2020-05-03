@@ -30,7 +30,7 @@ String COM_convert_mahdipath_to_abspath(String mahdipath,String extension,String
   }
   //=>if first segment is empty, set app directory path to it!
   if(segs[0]==0){
-    STR_init(&segs[0],project_root);
+    STR_init(&segs[0],program_root);
   }
   //=>append extension in last segment
   if(extension!=0){
@@ -85,6 +85,7 @@ void * COM_alloc_memory(Longint size){
   void * q = (Mvar *)malloc(size);
   //=>if not have enough memory free space
   if (q == 0){
+    // debug("not_enough_memory");
     EXP_set_errcode(NOT_MEMORY_ERRC);
     EXP_print_error(0,"not_enough_memory",0,STR_from_Longint(size),0,"COM_alloc_memory");
   }
@@ -92,256 +93,256 @@ void * COM_alloc_memory(Longint size){
 }
 //******************************************
 void COM_print_struct(uint8 which) {
-//   //=>print all nodes of imin struct (import instruction)
-//   if (which == 0 || which == PRINT_IMPORT_ST) {
-//     imin *tmp1 = entry_table.import_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print import_inst_struct :\n");
-//     for (;;) {
-//       printf("Active:%i,id:%li,type:%i,name:%s,packs:%s,funcs:%s,path:%s,line:%i,source:[%i][ERR%i]\n", tmp1->is_active, tmp1->id, tmp1->type,tmp1->name,SLIST_print(tmp1->packages,tmp1->pack_len),SLIST_print(tmp1->functions,tmp1->func_len),tmp1->path, tmp1->line,tmp1->source_index,tmp1->err_code);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of coin struct (config instruction)
-//   if (which == 0 || which == PRINT_CONFIG_ST) {
-//     coin *tmp1 = entry_table.config_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print config_inst_struct :\n");
-//     for (;;) {
-//       printf("[%li] name:%s,value:%s(%s),line:%i,source:[%i]\n", tmp1->id, tmp1->name,tmp1->value,tmp1->type, tmp1->line,tmp1->source_index);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of datas struct (data types)
-//   else if (which == 0 || which == PRINT_DATA_TYPES_ST) {
-//     datas *tmp1 = entry_table.datas_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print data_types_struct :\n");
-//     for (;;) {
-//       printf("[id:%li,type:%i,pid:%li]:%s\n", tmp1->id,tmp1->type,tmp1->pack_id,tmp1->name);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of mpfu struct (modules packages functions)
-//   else if (which == 0 || which == PRINT_MODULE_PACKFUNCS_ST) {
-//     mpfu *tmp1 = entry_table.mpfu_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print modules_packs_funcs_struct :\n");
-//     for (;;) {
-//       printf("[id:%li,mod:%i,pack:%i,stat:%i]:%s\n\t%s[%s]=>%s\n", tmp1->id,tmp1->mod_id,tmp1->pack_id,tmp1->is_static,tmp1->func_name,SLIST_print(tmp1->params_name,tmp1->params_len),SLIST_print(tmp1->params_type,tmp1->params_len),SLIST_print(tmp1->returns_type,tmp1->returns_len));
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-// // else if (which == 0 || which == PRINT_EXCEPTIONS_ST) {
-// //     exli *tmp1 = entry_table.exli_start;
-// //     printf("=====Print exceptions_list_struct :\n");
-// //     for (;;) {
-// //       printf("id:%i,type:%i,group:%s,lbl:%s,text:%s\n", tmp1->id, tmp1->type, exceptions_group[tmp1->group],
-// //              tmp1->lbl, tmp1->text);
-// //       tmp1 = tmp1->next;
-// //       if (tmp1 == 0) break;
-// //     }
-// //     printf("=====End printed\n");
-//   // } 
-//   //=>print all nodes of utst struct (utf8 strings)
-//   if (which == 0 || which == PRINT_UTF8_ST) {
-//     utst *tmp1 = entry_table.utst_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print utf8_strings_struct :\n");
-//     for (;;) {
-//       printf("id:%li,line:%i,max_bytes:%i, ", tmp1->id, tmp1->line, tmp1->max_bytes_per_char);
-//       USTR_print("string", tmp1->utf8_string, true);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of soco struct (source code)
-//   else if (which == 0 || which == PRINT_MAIN_SOURCE_ST) {
-//     soco *tmp1 = entry_table.soco_main_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print source_code_struct :\n");
-//     for (;;) {
-//       printf("line:%i,code:%s\n", tmp1->line, tmp1->code);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of soco struct (tokens)
-//   else if (which == 0 || which == PRINT_TOKENS_SOURCE_ST) {
-//     soco *tmp1 = entry_table.soco_tokens_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print source_code_tokens_struct :\n");
-//     for (;;) {
-//       printf("line:%i,code:%s\n", tmp1->line, tmp1->code);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of blst funcs struct (functions)
-//   else if (which == 0 || which == PRINT_FUNC_ST) {
-//     blst *tmp1 = entry_table.blst_func_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print func_block_struct :\n");
-//     for (;;) {
-//       printf("[id:%li,pid:%li],%s,name:%s,params:%s\n", tmp1->id,tmp1->pack_id,ILIST_print(tmp1->func_attrs,MAX_FUNCTION_ATTRIBUTES), tmp1->label, SLIST_print(tmp1->params, tmp1->params_len));
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of fpp struct (function params and package attrs)
-//   else if (which == 0 || which == PRINT_FUNC_PACK_PARAMS_ST) {
-//     fpp *tmp1 = entry_table.fpp_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print func_pack_params_struct :\n");
-//     for (;;) {
-//       printf("[id:%li,typ:%i,refid:%li,ord:%i]:%s|%s|%s\t[priv:%i,stat:%i,ref:%i,line:%i]\n",tmp1->id, tmp1->type,tmp1->refid,tmp1->porder, tmp1->pname,tmp1->ptype,tmp1->pvalue,tmp1->is_private,tmp1->is_static,tmp1->is_reference,tmp1->line);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of instru struct (instructions)
-//   else if (which == 0 || which == PRINT_INSTRU_ST) {
-//       instru *tmp1 = entry_table.instru_start;
-//       if (tmp1 == 0) return;
-//       printf("=====Print instructions_struct :\n");
-//       for (;;) {
-//         printf("(id:%li,pid:%li,fid:%li,sid:%li,order:%li,type:%i,line:%i),code:%s\n",
-//               tmp1->id,tmp1->pack_id,tmp1->func_id,tmp1->stru_id,tmp1->order,tmp1->type,tmp1->line,tmp1->code
-//               // entry_table.sources_list[tmp1->source_id], tmp1->line
-//               );
-//         tmp1 = tmp1->next;
-//         if (tmp1 == 0) break;
-//       }
-//       printf("=====End printed\n");
-//     } 
-//   //=>print all nodes of blst packs struct (packages)
-//   else if (which == 0 || which == PRINT_PACK_ST) {
-//     blst *tmp1 = entry_table.blst_pack_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print pack_block_struct :\n");
-//     for (;;) {
-//       if(tmp1->type==PACK_BLOCK_ID){
-//         printf("id:%li,pid:%li,name:%s,inherit:%s,params:%s\n", tmp1->id, tmp1->pack_id, tmp1->label,tmp1->inherit, SLIST_print(tmp1->params, tmp1->params_len));
-//       }
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of inpk struct (inherit packages)
-//   else if (which == 0 || which == PRINT_INHERIT_ST) {
-//     inpk *tmp1 = entry_table.inpk_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print inherit_package_struct :\n");
-//     for (;;) {
-//       printf("pid:%li,name:%s[iid:%li,inherit:%s,done:%i]\n", tmp1->parent_id, tmp1->parent_name, tmp1->inherit_id,tmp1->inherit_name,tmp1->is_done);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-//   //=>print all nodes of blst stru struct (structures)
-//   else if (which == 0 || which == PRINT_STRU_ST) {
-//     blst *tmp1 = entry_table.blst_stru_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print block_structure_struct :\n");
-//     for (;;) {
-//       printf("id:%li,lbl[%i]:%s,(pid:%li,fid:%li,sid:%li),argvs:%s\n", tmp1->id, tmp1->type, tmp1->label, tmp1->pack_id,tmp1->func_id,tmp1->stru_id, SLIST_print(tmp1->params, tmp1->params_len));
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } 
-// else if (which == 0 || which == PRINT_STRUCT_DES_ST) {
-//     stde *tmp1 = entry_table.stde_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print struct descriptor :\n");
-//     for (;;) {
-//       printf("%i(%s):\n", tmp1->id, tmp1->type);
-//       print_vaar(tmp1->st);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } else if (which == 0 || which == PRINT_MAGIC_MACROS_ST) {
-//     mama *tmp1 = entry_table.mama_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print magic macros :\n");
-//     for (;;) {
-//       printf("[id:%i,type:%i]%s;%s:%s\n", tmp1->id, tmp1->type, tmp1->value_type, tmp1->key, tmp1->value);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } else if (which == 0 || which == PRINT_FUNCTIONS_STACK_ST) {
-//     fust *tmp1 = entry_table.fust_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print functions stack :\n");
-//     for (;;) {
-//       printf("fid:%i,fin:%i,Pfin:%i,sid:%i,order:%i\n", tmp1->fid, tmp1->fin, tmp1->parent_fin, tmp1->sid, tmp1
-//           ->order);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } else if (which == 0 || which == PRINT_STRUCTURES_STACK_ST) {
-//     stst *tmp1 = entry_table.stst_start;
-//     if (tmp1 == 0) return;
-//     printf("=====Print structures stack :\n");
-//     for (;;) {
-//       printf("type:%i,fid:%i,fin:%li,sid:%li,Psid:%li,order:%li,extra:%s\n",
-//              tmp1->type,
-//              tmp1->fid,
-//              tmp1->fin,
-//              tmp1->sid,
-//              tmp1->parent_sid,
-//              tmp1
-//                  ->order,
-//              tmp1->extra);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } else if (which == 0 || which == PRINT_CONDITION_LEVEL_ST) {
-//     cole *tmp1 = entry_table.cole_start;
-//     if (tmp1 == 0) {
-//       printf("(null) condition level\n");
-//       return;
-//     }
-//     printf("=====Print condition level :\n");
-//     for (;;) {
-//       printf("[id:%i,fin:%i,sid:%i]:%i\n", tmp1->id, tmp1->fin, tmp1->sid, tmp1->is_complete);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   } else if (which == 0 || which == PRINT_LOOP_LEVEL_ST) {
-//     lole *tmp1 = entry_table.lole_start;
-//     if (tmp1 == 0) {
-//       printf("(null) loop level\n");
-//       return;
-//     }
-//     printf("=====Print loop level :\n");
-//     for (;;) {
-//       printf("id:%i,fin:%i,sid:%i\n", tmp1->id, tmp1->fin, tmp1->sid);
-//       tmp1 = tmp1->next;
-//       if (tmp1 == 0) break;
-//     }
-//     printf("=====End printed\n");
-//   }
+  //   //=>print all nodes of imin struct (import instruction)
+  //   if (which == 0 || which == PRINT_IMPORT_ST) {
+  //     imin *tmp1 = entry_table.import_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print import_inst_struct :\n");
+  //     for (;;) {
+  //       printf("Active:%i,id:%li,type:%i,name:%s,packs:%s,funcs:%s,path:%s,line:%i,source:[%i][ERR%i]\n", tmp1->is_active, tmp1->id, tmp1->type,tmp1->name,SLIST_print(tmp1->packages,tmp1->pack_len),SLIST_print(tmp1->functions,tmp1->func_len),tmp1->path, tmp1->line,tmp1->source_index,tmp1->err_code);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of coin struct (config instruction)
+  //   if (which == 0 || which == PRINT_CONFIG_ST) {
+  //     coin *tmp1 = entry_table.config_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print config_inst_struct :\n");
+  //     for (;;) {
+  //       printf("[%li] name:%s,value:%s(%s),line:%i,source:[%i]\n", tmp1->id, tmp1->name,tmp1->value,tmp1->type, tmp1->line,tmp1->source_index);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of datas struct (data types)
+  //   else if (which == 0 || which == PRINT_DATA_TYPES_ST) {
+  //     datas *tmp1 = entry_table.datas_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print data_types_struct :\n");
+  //     for (;;) {
+  //       printf("[id:%li,type:%i,pid:%li]:%s\n", tmp1->id,tmp1->type,tmp1->pack_id,tmp1->name);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of mpfu struct (modules packages functions)
+  //   else if (which == 0 || which == PRINT_MODULE_PACKFUNCS_ST) {
+  //     mpfu *tmp1 = entry_table.mpfu_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print modules_packs_funcs_struct :\n");
+  //     for (;;) {
+  //       printf("[id:%li,mod:%i,pack:%i,stat:%i]:%s\n\t%s[%s]=>%s\n", tmp1->id,tmp1->mod_id,tmp1->pack_id,tmp1->is_static,tmp1->func_name,SLIST_print(tmp1->params_name,tmp1->params_len),SLIST_print(tmp1->params_type,tmp1->params_len),SLIST_print(tmp1->returns_type,tmp1->returns_len));
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  // // else if (which == 0 || which == PRINT_EXCEPTIONS_ST) {
+  // //     exli *tmp1 = entry_table.exli_start;
+  // //     printf("=====Print exceptions_list_struct :\n");
+  // //     for (;;) {
+  // //       printf("id:%i,type:%i,group:%s,lbl:%s,text:%s\n", tmp1->id, tmp1->type, exceptions_group[tmp1->group],
+  // //              tmp1->lbl, tmp1->text);
+  // //       tmp1 = tmp1->next;
+  // //       if (tmp1 == 0) break;
+  // //     }
+  // //     printf("=====End printed\n");
+  //   // } 
+  //   //=>print all nodes of utst struct (utf8 strings)
+  //   if (which == 0 || which == PRINT_UTF8_ST) {
+  //     utst *tmp1 = entry_table.utst_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print utf8_strings_struct :\n");
+  //     for (;;) {
+  //       printf("id:%li,line:%i,max_bytes:%i, ", tmp1->id, tmp1->line, tmp1->max_bytes_per_char);
+  //       USTR_print("string", tmp1->utf8_string, true);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of soco struct (source code)
+  //   else if (which == 0 || which == PRINT_MAIN_SOURCE_ST) {
+  //     soco *tmp1 = entry_table.soco_main_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print source_code_struct :\n");
+  //     for (;;) {
+  //       printf("line:%i,code:%s\n", tmp1->line, tmp1->code);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of soco struct (tokens)
+  //   else if (which == 0 || which == PRINT_TOKENS_SOURCE_ST) {
+  //     soco *tmp1 = entry_table.soco_tokens_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print source_code_tokens_struct :\n");
+  //     for (;;) {
+  //       printf("line:%i,code:%s\n", tmp1->line, tmp1->code);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of blst funcs struct (functions)
+  //   else if (which == 0 || which == PRINT_FUNC_ST) {
+  //     blst *tmp1 = entry_table.blst_func_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print func_block_struct :\n");
+  //     for (;;) {
+  //       printf("[id:%li,pid:%li],%s,name:%s,params:%s\n", tmp1->id,tmp1->pack_id,ILIST_print(tmp1->func_attrs,MAX_FUNCTION_ATTRIBUTES), tmp1->label, SLIST_print(tmp1->params, tmp1->params_len));
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of fpp struct (function params and package attrs)
+  //   else if (which == 0 || which == PRINT_FUNC_PACK_PARAMS_ST) {
+  //     fpp *tmp1 = entry_table.fpp_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print func_pack_params_struct :\n");
+  //     for (;;) {
+  //       printf("[id:%li,typ:%i,refid:%li,ord:%i]:%s|%s|%s\t[priv:%i,stat:%i,ref:%i,line:%i]\n",tmp1->id, tmp1->type,tmp1->refid,tmp1->porder, tmp1->pname,tmp1->ptype,tmp1->pvalue,tmp1->is_private,tmp1->is_static,tmp1->is_reference,tmp1->line);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of instru struct (instructions)
+  //   else if (which == 0 || which == PRINT_INSTRU_ST) {
+  //       instru *tmp1 = entry_table.instru_start;
+  //       if (tmp1 == 0) return;
+  //       printf("=====Print instructions_struct :\n");
+  //       for (;;) {
+  //         printf("(id:%li,pid:%li,fid:%li,sid:%li,order:%li,type:%i,line:%i),code:%s\n",
+  //               tmp1->id,tmp1->pack_id,tmp1->func_id,tmp1->stru_id,tmp1->order,tmp1->type,tmp1->line,tmp1->code
+  //               // entry_table.sources_list[tmp1->source_id], tmp1->line
+  //               );
+  //         tmp1 = tmp1->next;
+  //         if (tmp1 == 0) break;
+  //       }
+  //       printf("=====End printed\n");
+  //     } 
+  //   //=>print all nodes of blst packs struct (packages)
+  //   else if (which == 0 || which == PRINT_PACK_ST) {
+  //     blst *tmp1 = entry_table.blst_pack_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print pack_block_struct :\n");
+  //     for (;;) {
+  //       if(tmp1->type==PACK_BLOCK_ID){
+  //         printf("id:%li,pid:%li,name:%s,inherit:%s,params:%s\n", tmp1->id, tmp1->pack_id, tmp1->label,tmp1->inherit, SLIST_print(tmp1->params, tmp1->params_len));
+  //       }
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of inpk struct (inherit packages)
+  //   else if (which == 0 || which == PRINT_INHERIT_ST) {
+  //     inpk *tmp1 = entry_table.inpk_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print inherit_package_struct :\n");
+  //     for (;;) {
+  //       printf("pid:%li,name:%s[iid:%li,inherit:%s,done:%i]\n", tmp1->parent_id, tmp1->parent_name, tmp1->inherit_id,tmp1->inherit_name,tmp1->is_done);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  //   //=>print all nodes of blst stru struct (structures)
+  //   else if (which == 0 || which == PRINT_STRU_ST) {
+  //     blst *tmp1 = entry_table.blst_stru_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print block_structure_struct :\n");
+  //     for (;;) {
+  //       printf("id:%li,lbl[%i]:%s,(pid:%li,fid:%li,sid:%li),argvs:%s\n", tmp1->id, tmp1->type, tmp1->label, tmp1->pack_id,tmp1->func_id,tmp1->stru_id, SLIST_print(tmp1->params, tmp1->params_len));
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } 
+  // else if (which == 0 || which == PRINT_STRUCT_DES_ST) {
+  //     stde *tmp1 = entry_table.stde_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print struct descriptor :\n");
+  //     for (;;) {
+  //       printf("%i(%s):\n", tmp1->id, tmp1->type);
+  //       print_vaar(tmp1->st);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } else if (which == 0 || which == PRINT_MAGIC_MACROS_ST) {
+  //     mama *tmp1 = entry_table.mama_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print magic macros :\n");
+  //     for (;;) {
+  //       printf("[id:%i,type:%i]%s;%s:%s\n", tmp1->id, tmp1->type, tmp1->value_type, tmp1->key, tmp1->value);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } else if (which == 0 || which == PRINT_FUNCTIONS_STACK_ST) {
+  //     fust *tmp1 = entry_table.fust_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print functions stack :\n");
+  //     for (;;) {
+  //       printf("fid:%i,fin:%i,Pfin:%i,sid:%i,order:%i\n", tmp1->fid, tmp1->fin, tmp1->parent_fin, tmp1->sid, tmp1
+  //           ->order);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } else if (which == 0 || which == PRINT_STRUCTURES_STACK_ST) {
+  //     stst *tmp1 = entry_table.stst_start;
+  //     if (tmp1 == 0) return;
+  //     printf("=====Print structures stack :\n");
+  //     for (;;) {
+  //       printf("type:%i,fid:%i,fin:%li,sid:%li,Psid:%li,order:%li,extra:%s\n",
+  //              tmp1->type,
+  //              tmp1->fid,
+  //              tmp1->fin,
+  //              tmp1->sid,
+  //              tmp1->parent_sid,
+  //              tmp1
+  //                  ->order,
+  //              tmp1->extra);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } else if (which == 0 || which == PRINT_CONDITION_LEVEL_ST) {
+  //     cole *tmp1 = entry_table.cole_start;
+  //     if (tmp1 == 0) {
+  //       printf("(null) condition level\n");
+  //       return;
+  //     }
+  //     printf("=====Print condition level :\n");
+  //     for (;;) {
+  //       printf("[id:%i,fin:%i,sid:%i]:%i\n", tmp1->id, tmp1->fin, tmp1->sid, tmp1->is_complete);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   } else if (which == 0 || which == PRINT_LOOP_LEVEL_ST) {
+  //     lole *tmp1 = entry_table.lole_start;
+  //     if (tmp1 == 0) {
+  //       printf("(null) loop level\n");
+  //       return;
+  //     }
+  //     printf("=====Print loop level :\n");
+  //     for (;;) {
+  //       printf("id:%i,fin:%i,sid:%i\n", tmp1->id, tmp1->fin, tmp1->sid);
+  //       tmp1 = tmp1->next;
+  //       if (tmp1 == 0) break;
+  //     }
+  //     printf("=====End printed\n");
+  //   }
 }
 
 //*************************************************************
@@ -447,6 +448,11 @@ double I32_power(double base, int32 power) {
 //******************************************
 
 
+// path functions
+//******************************************
+String PATH_join(String dir,String filename){
+  return STR_multi_append(dir,os_separator,filename,0);
+}
 
 //*************************************************************
 // void print_vaar(vaar_en s) {
@@ -792,8 +798,9 @@ void debug(const char *fmt, ...){
   va_list argvs;
   va_start(argvs,fmt);
   if(is_programmer_debug>=1){
-    fmt = STR_append(fmt,"\n");
-    vprintf(fmt,argvs);
+    String fmt_str = STR_from_const(fmt);
+    fmt_str = CH_append(fmt_str,'\n');
+    vprintf(fmt_str,argvs);
   }
   va_end(argvs);
 }

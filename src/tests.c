@@ -52,3 +52,20 @@ void TEST_memory(){
   VM_show(0);
 
 }
+// *************************************
+
+void TEST_inheritance(){
+  // //=>if programmer debug is enabled, then show all structs
+  // if(is_programmer_debug>=2){
+  //   COM_print_struct(PRINT_UTF8_ST);
+  //   COM_print_struct(PRINT_IMPORT_ST);
+  //   COM_print_struct(PRINT_CONFIG_ST);
+  //   COM_print_struct(PRINT_PACK_ST);
+  //   COM_print_struct(PRINT_FUNC_ST);
+  //   COM_print_struct(PRINT_DATA_TYPES_ST);
+  //   COM_print_struct(PRINT_STRU_ST);
+  //   COM_print_struct(PRINT_INSTRU_ST);
+  //   COM_print_struct(PRINT_FUNC_PACK_PARAMS_ST);
+  //   COM_print_struct(PRINT_MODULE_PACKFUNCS_ST);
+  // }
+}

@@ -7,6 +7,7 @@
 
 void TEST_main();
 void TEST_memory();
+void TEST_inheritance();
 
 
 #endif /*__MAHDI_TESTS_H*/

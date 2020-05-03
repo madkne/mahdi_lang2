@@ -58,7 +58,7 @@ pointer:p
 func,class,package,override,static,true,false,if,elif,else,choose,and,or,not,next,break,loop,num,str,bool,lambda,manage,return,this,import,config=>26
 *************************************
 -----------------builtin functions
-len(var),typeof(var)/*num,str[],class1*/,subtypeof(var)/*i,f,h,b,m,p*/,exec(str),raise(str,type),del(var),nil(var)/*check is empty*/,tostr(var)/*convert to string*/,tonum(str)/*convert to number*/,isnum(str),isarray(var),stackparams()
+len(var),typeof(var)/*num,str[],class1*/,subtypeof(var)/*i,f,h,b,m,p*/,exec(str),raise(str,type:num),del(var),nil(var)/*check is empty*/,tostr(var)/*convert to string*/,tonum(str)/*convert to number*/,isnum(str),isarray(var),stackparams()
 -----------------predefined class methods
 - these functions just called by mahdi, not programmer!
 _bootup_(string):num,_init_():package,_plus_(package):package,_minus_(package):package,_multiply_(package):package,_divide_(package):package,_len_():num,_str_():string,_equal_(package):boolean,_empty_():boolean/*nil(pack1)*/,_del_():bool/*del(pack1)*/,_index_(num|str),_range_(num,num)/*class1[4:6]*/

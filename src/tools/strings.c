@@ -638,14 +638,33 @@ String STR_from_double(double n, uint8 afterpoint) {
 }
 
 //******************************************
-String STR_multi_append(String s, String s1, String s2, String s3, String s4, String s5) {
+/**
+ * get unlimited strings and append them together!
+ * [IMPORTANT] : last parameter always must be 0
+ * @param String s
+ * @param ...
+ * @return String
+ * @author madkne
+ * @since 2020.5.3
+ * @version 1.0
+ */ 
+String STR_multi_append(String s, ...) {
+  //=>init vars
+  va_list argvs;
   String ret = 0;
+  String arg = 0;
+  //=>set s to ret
   STR_init(&ret, s);
-  if (s1 != 0)ret = STR_append(ret, s1); else return ret;
-  if (s2 != 0)ret = STR_append(ret, s2); else return ret;
-  if (s3 != 0)ret = STR_append(ret, s3); else return ret;
-  if (s4 != 0)ret = STR_append(ret, s4); else return ret;
-  if (s5 != 0)ret = STR_append(ret, s5);
+  //=>init argvs
+  va_start(argvs,s);
+  //=>iterate argvs until end
+  while((arg = va_arg(argvs,String)) != 0){
+    // debug("append:%s=>%s",arg,ret);
+    ret = STR_append(ret, arg);
+  }
+
+  va_end(argvs);
+
   return ret;
 }
 

@@ -8,8 +8,7 @@
 //******************************data values
 clock_t AppStartedClock;
 String AppStartedTime;
-String project_root;
-String program_package;
+String program_root;
 String interpreter_level;
 String interpreter_path;
 String interpreter_tmp_path;
@@ -118,13 +117,22 @@ typedef struct pointer_memory_struct {
 Mpoint *hash_pointers[HASH_MEM_SIZE];
 Mpoint *hash_pointers_end[HASH_MEM_SIZE];
 Longint hash_pointers_len[HASH_MEM_SIZE];
+//****************************built_in_funcs struct
+typedef struct built_in_funcs_struct {
+  uint32 id;
+  String func_name;
+  String params;
+  uint8 params_len;
 
+  struct built_in_funcs_struct *next;
+} bifs;
 //****************************entry_table struct
 struct entry_table_struct {
+    // exceptions struct
     exli *exli_start;
     exli *exli_end;
     Longint exceptions_count;
-
+    // virtual memory struct
     Mvar *var_memory_start;
     Mvar *var_memory_end;
     Mpoint *pointer_memory_start;
@@ -133,8 +141,14 @@ struct entry_table_struct {
     Longint var_mem_len;
     Longint pointer_mem_id;
     Longint pointer_mem_len;
-
-
+    // built-in functions struct
+    bifs *bifs_start;
+    bifs *bifs_end;
+    uint32 bifs_len;
+    // program package source files
+    String program_package;
+    StrList program_sources;
+    uint32 program_sources_len;
 };
 struct entry_table_struct entry_table;
 

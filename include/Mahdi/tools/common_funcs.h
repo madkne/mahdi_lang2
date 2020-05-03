@@ -14,10 +14,17 @@ void * COM_alloc_memory(Longint size);
 //******************************************
 Boolean BOOL_switch(Boolean b);
 Boolean BOOL_switch_str(String b);
+
 // int32 functions
 //******************************************
 double I32_power(double base, int32 power);
 //******************************************
+
+// path functions
+//******************************************
+String PATH_join(String dir,String filename);
+
+
 void debug(const char *fmt, ...);
 /*
 void msg(String format, ...);
