@@ -54,18 +54,22 @@ uint8 errcodes_len;
 String exceptions_group[16];
 String exceptions_type[4];
 
+// for parsing
+uint8 token_splitters[13];
+
+String keywords[26];
+uint8 single_operators[7];
 // String package_zones[2];
 // String method_attributes[2];
-// String keywords[26];
 // // String keywords_out[13];
 // String block_instructions[6];
-// uint8 single_operators[7];
+
 // String comparative_operators[6];
 // String alloc_operators[8];
 // String boolean_operators[2];
 // String basic_types[3];
 // uint8 golden_bytes[5];
-// uint8 token_splitters[11];
+
 // uint8 words_splitter[16];
 // uint8 sub_types[6];
 // String control_chars[5];

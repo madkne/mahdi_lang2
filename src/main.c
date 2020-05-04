@@ -68,6 +68,12 @@ int main(int argc, char **argv) {
   return 0;
 }
 //************************************************
+/**
+ * lifecycle of mahdi interpreter from init defaults to meaning and running instructions
+ * @author madkne
+ * @since 2020.5.3
+ * @version 1.0
+ */ 
 Boolean INTR_start() {
   //-----------------------init interpreter
   STR_init(&interpreter_level, "init");
@@ -83,18 +89,18 @@ Boolean INTR_start() {
     return false;
   }
   //-----------------------parsing source codes
-  // STR_init(&interpreter_level, "parse");
-  // if(! IMPORT_()){
-  //   return false;
-  // }
-  // //-----------------------solve inherits packages
+  STR_init(&interpreter_level, "parse");
+  if(! PARSE_start()){
+    return false;
+  }
+  //-----------------------solve inherits packages
 	// if(entry_table.need_inheritance){
 	// 	STR_init(&interpreter_level, "inherit");
 	// 	Boolean ret1 =INHERIT_run();
   //   if (!ret1) return false;
 	// }
   // TEST_inheritance();
-  // //-----------------------meaning&running instructions
+  //-----------------------meaning&running instructions
   // STR_init(&interpreter_level, "runtime");
   // Boolean ret3 = APP_start();
   // if (!ret3) return false;
@@ -102,9 +108,11 @@ Boolean INTR_start() {
   // if (is_programmer_debug > 0) {
   //   VM_show(0);
   // }
-//   //-----------------------free memory
-//   str_init(&interpreter_level, "free");
-return true;
+  //-----------------------free memory
+  STR_init(&interpreter_level, "free");
+
+
+  return true;
 }
 
 //************************************************

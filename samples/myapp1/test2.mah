@@ -5,14 +5,23 @@
 
 package myapp1
 
+GlobalVar = 0;
 
 func _bootup_(){
     t=5
     if(t==5 or t<5){
     	v=[5,8]
     	t++
+    }else{
+    	t--
     }
     g,_=hello(t,(t+1)*0b0101^0xa)
     myapp111 = myapp11(4,6.6)
     s = tostr(myapp111)
+    lam = (& ii:num)=>{
+    	ii++
+    	GlobalVar += ii
+    }
+    lam2 = (&h:num)=>h--
+    myapp111.execlambda(lam)
 }

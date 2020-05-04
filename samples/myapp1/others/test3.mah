@@ -5,6 +5,13 @@ class myapp11(){
 	@init
 	func _init_(x,y)
 	func _str_(){
-		return "myapp1 is ({x},{y})"
+		return 'myapp1 is ({x},{y})'
 	}
+	@public
+	func execlambda(k:lambda){
+		loop(i=0;i<2;i++){
+			k(i)
+		}
+	}
+	
 }

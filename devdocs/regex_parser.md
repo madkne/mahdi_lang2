@@ -4,6 +4,9 @@
 - [section1?] : means that if not exist, then ignore it and continue!
 - special chars : ", [ * ? ]"
 --------------------------
+- package statement
+> package[name]
+
 - class header:
 > class[name]([parent?])
 
@@ -18,9 +21,6 @@
 
 - config statement
 > config[name]=[value]
-
-- package statement
-> package[name]
 
 - instruction statement
 > [instruction];

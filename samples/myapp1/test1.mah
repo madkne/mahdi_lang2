@@ -4,7 +4,18 @@ package     myapp1;
 
 
 func hello(g:num,n=4){
-	if(n>4) g++
+	choose(n){
+	   (43)=>{
+	   	g=4
+	   }
+	   (34 or 12)=>g--
+	   ()=>{
+	   	g
+	   	=
+	   	0
+	   }
+	}
 	return g++,'سلام به دنیا \
 				hello world'
+			
 }

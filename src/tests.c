@@ -10,6 +10,7 @@ void TEST_main(){
   if (is_programmer_debug >= 3){
     COM_print_struct(PRINT_MAIN_SOURCE_ST);
     COM_print_struct(PRINT_UTF8_ST);
+    COM_print_struct(PRINT_TOKENS_SOURCE_ST);
   }
 
   //  String ss = 0;

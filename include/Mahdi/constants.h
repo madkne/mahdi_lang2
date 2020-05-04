@@ -7,7 +7,7 @@
 
 //**************************************************define interpreter constants
 #define  APP_NAME                       "Mahdi Programming Language"
-#define  VERSION                        "0.00.031"    //X.Y.Z=> Z<100,Y<10
+#define  VERSION                        "0.00.036"    //X.Y.Z=> Z<100,Y<10
 #define  VERSION_NUMBER                 3          //XYZ=>(X*100)+(Y*10)+(Z/10)
 #define  VERSION_NAME                   "BETA"
 #define  SLOGAN                         "Assemble all the good features of programming languages" //اجتماع تمام ویژگی های خوب زبان های برنامه نویسی
@@ -18,9 +18,9 @@
 #define  LICENCE                        "Creative Commons Attribution Share Alike 4.0 (cc-by-sa-4.0)"
 #define  OFFICIAL_WEBSITE               "http://mahdi-lang.ir"
 #define  COPYRIGHT                      "Copyright (C) 2020"
-#define  C_CORE_CODE_LINES              0       //0.2.48-0.2.90
-#define  H_CORE_CODE_LINES              0
-#define  MODULES_CODE_LINES             0           //+=0
+#define  C_CORE_CODE_LINES              2221       //0.0.30-0.0.60
+#define  H_CORE_CODE_LINES              398
+#define  MODULES_CODE_LINES             0           //+=2619
 #define  LANGUAGE_CREATOR               "madkne"
 #define  CREATOR_SIGNATURE              "48441415431625231"
 #define  TRUST_LEVEL                    0          //100%

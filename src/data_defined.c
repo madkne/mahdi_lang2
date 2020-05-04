@@ -76,19 +76,21 @@ String exceptions_group[] = {
 uint8 errcodes_len=MAX_ERROR_CODES;
 String exceptions_type[4] = {"CANCEL", "FATAL", "ERROR", "WARNING"};
 
+// for parsing
+uint8 token_splitters[13] = {' ', '(', ')', '=', '[', ']', '{', '}', ';', ',',':','.','>'};
 
 // String package_zones[2]={"@private","@public"};
 // String method_attributes[2]={"override","static"};
 
 
-// String keywords[26] = {"func","pack","override","static","true","false","if","elif","else","choose","and","or","not","next","break","loop","def","number","string","boolean","manage","return","self","this","import","config"};
-
+String keywords[26] = {"func","class","package","override","static","true","false","if","elif","else","choose","and","or","not","next","break","loop","num","str","bool","lambda","manage","return","this","import","config"};
+uint8 single_operators[7] = {'+', '-', '*', '/', '%', '^','|'};
 // // String keywords_out[13] = {"func", "true", "false", "null", "if", "elif", "else", "loop", "manage", "next", "break","return", "import"};
 
 // String block_instructions[6] = {"loop", "if", "elif", "else", "manage","choose"};
 
 // //uint8 keywords_splitter[5] = {':', ' ', '{', '=', '('};
-// uint8 single_operators[7] = {'+', '-', '*', '/', '%', '^','|'};
+
 
 // String comparative_operators[6] = {"==", ">=", "<=", ">", "<", "!="};
 
@@ -100,7 +102,6 @@ String exceptions_type[4] = {"CANCEL", "FATAL", "ERROR", "WARNING"};
 
 // uint8 golden_bytes[] = {7, 11, 27, 127, 223};
 
-// uint8 token_splitters[11] = {' ', '(', ')', '=', '[', ']', '{', '}', ';', ',',':'};
 
 // uint8 words_splitter[16] = {':', ' ', '{', '=', '(', ',', '.', '[', ']', '}', ')', ';','-','<','>','!'};
 
