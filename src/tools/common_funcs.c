@@ -188,6 +188,50 @@ Boolean COM_is_valid_name(String name, Boolean is_array){
     return true;
 }
 //******************************************
+/**
+ * get a pattern string like "[attrs* ]func[name]([params*,])" and split its items
+ * @param String pattern
+ * @param StrList *items
+ * @return uint32
+ * @author madkne
+ * @version 1.0
+ * @since 2020.5.4
+ */ 
+uint32 COM_regex_pattern_splitter(String pattern,StrList *items){
+  //=>init vars
+  uint32 len = 0;
+  uint32 pat_len = STR_length(pattern);
+  Boolean is_bra = false;
+  String word = 0;
+  uint8 special_chars[] = {'(', ')', '{', '}', '[', ']', '.'};
+  //=>iterate chars of pattern string
+  for (uint32 i = 0; i < pat_len; i++){
+    //=>check for brackets
+    if((pattern[i] == '[' || pattern[i] == ']') && (i == 0 || pattern[i-1] != '\\')){
+      is_bra = BOOL_switch(is_bra);
+      //=>if is close bracket,append ']' to word
+      if(pattern[i] == ']') word = CH_append(word,pattern[i]);
+      //=>append word to items list, is not empty
+      if(word != 0) SLIST_append(items,word,len++);
+      word = 0;
+      //=>if is close bracket, then continue
+      if(pattern[i] == ']') continue;
+    }
+    //=>if special char like ),(,{,},..
+    else if(!is_bra && CH_search(special_chars,pattern[i],ChArraySize(special_chars))){
+      //=>append word to items list, is not empty
+      if(word != 0) SLIST_append(items,word,len++);
+      //=>append char alone to items list!
+      SLIST_append(items,CH_to_string(pattern[i]),len++);
+      continue;
+    }
+    //=>append to word
+    word = CH_append(word,pattern[i]);
+  }
+  //=>return length pattern items
+  return len;
+}
+//******************************************
 void COM_print_struct(uint8 which) {
     
   //=>print all nodes of utst struct (utf8 strings)
@@ -218,10 +262,23 @@ void COM_print_struct(uint8 which) {
   //=>print all nodes of soco struct (tokens)
   if (which == 0 || which == PRINT_TOKENS_SOURCE_ST) {
     soco *tmp1 = entry_table.soco_tokens_start;
+    Longint ind = 0;
     if (tmp1 == 0) return;
     printf("=====Print source_code_tokens_struct :\n");
     for (;;) {
-      printf("line:%i,src_id:%i,code:%s\n", tmp1->line,tmp1->source_id, tmp1->code);
+      printf("[%li] line:%i,src_id:%i,code:%s\n", ind++, tmp1->line,tmp1->source_id, tmp1->code);
+      tmp1 = tmp1->next;
+      if (tmp1 == 0) break;
+    }
+    printf("=====End printed\n");
+  } 
+  //=>print all nodes of datas struct (data types)
+  if (which == 0 || which == PRINT_DATA_TYPES_ST) {
+    datas *tmp1 = entry_table.datas_start;
+    if (tmp1 == 0) return;
+    printf("=====Print data_types_struct :\n");
+    for (;;) {
+      printf("[id:%li,type:%i]:%s (%s)\n", tmp1->id,tmp1->type,tmp1->name,tmp1->inherit);
       tmp1 = tmp1->next;
       if (tmp1 == 0) break;
     }
@@ -248,18 +305,6 @@ void COM_print_struct(uint8 which) {
   //     printf("=====Print config_inst_struct :\n");
   //     for (;;) {
   //       printf("[%li] name:%s,value:%s(%s),line:%i,source:[%i]\n", tmp1->id, tmp1->name,tmp1->value,tmp1->type, tmp1->line,tmp1->source_index);
-  //       tmp1 = tmp1->next;
-  //       if (tmp1 == 0) break;
-  //     }
-  //     printf("=====End printed\n");
-  //   } 
-  //   //=>print all nodes of datas struct (data types)
-  //   else if (which == 0 || which == PRINT_DATA_TYPES_ST) {
-  //     datas *tmp1 = entry_table.datas_start;
-  //     if (tmp1 == 0) return;
-  //     printf("=====Print data_types_struct :\n");
-  //     for (;;) {
-  //       printf("[id:%li,type:%i,pid:%li]:%s\n", tmp1->id,tmp1->type,tmp1->pack_id,tmp1->name);
   //       tmp1 = tmp1->next;
   //       if (tmp1 == 0) break;
   //     }

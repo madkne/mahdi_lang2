@@ -89,6 +89,7 @@ MAHDI structure: (linux)
 	- pkgs/
 		- encoding.mahpack (json,xml,base64,csv,...)
 		- net.mahpack
+		- database.mahpack
 		- mlearn.mahpack
 		- crypto.mahpack (aes,md5,sha1,...)
 		- compress.mahpack (gzip,bzip2,zlib,tar,zip,...)
@@ -170,7 +171,7 @@ class pk1(){
 	@setter
 	func fg(s:string){}
 }
------------------switch structure
+-----------------choose structure
 - if not set true item(default case), occurs an warning and if not all conditions, occurs an error!
 - can not define another choose into the other
 choose(var){

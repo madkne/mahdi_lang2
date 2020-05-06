@@ -131,6 +131,9 @@ typedef struct built_in_funcs_struct {
     struct built_in_funcs_struct *next;
 } bifs;
 //****************************source_code struct
+/**
+ * (importer) 
+ */ 
 typedef struct source_code_struct {
     uint32 line;
     String code;
@@ -140,6 +143,9 @@ typedef struct source_code_struct {
     struct source_code_struct *next;
 } soco;
 //****************************utf8_strings struct
+/**
+ * (importer) 
+ */ 
 /**
  * store utf8 strings like str r='سلام' => str s='!UTF8!'
  */
@@ -152,6 +158,9 @@ typedef struct utf8_strings_struct {
     struct utf8_strings_struct *next;
 } utst;
 //****************************import struct
+/**
+ * (importer) 
+ */ 
 typedef struct import_source_struct {
     Longint id;
     uint8 type; //mod(m)|pack(p)|file(f)
@@ -164,6 +173,40 @@ typedef struct import_source_struct {
 
     struct import_source_struct *next;
 } imso;
+//****************************map struct
+typedef struct map_struct {
+  String key;
+  StrList items;
+  Longint items_len;
+
+  struct map_struct *next;
+} map;
+//****************************cycles struct
+/**
+ * (parser) 
+ */ 
+typedef struct cycle_struct {
+  Longint class_id;
+  Longint func_id;
+  Longint parent_lambda_id;
+  Longint lambda_id;
+  Longint parent_block_id;
+  Longint block_id;
+  Boolean block_inline;
+  uint32 start_pars;
+} cycle;
+//****************************data_types struct
+/**
+ * (parser) store all valid data types, basic and user defined by classes
+ */ 
+typedef struct data_types_struct {
+  Longint id;
+  uint8 type; //basic,class
+  String name;
+  String inherit;
+
+  struct data_types_struct *next;
+} datas;
 //****************************entry_table struct
 struct entry_table_struct {
     // exceptions struct
@@ -204,6 +247,12 @@ struct entry_table_struct {
     imso *imso_start;
     imso *imso_end;
     Longint import_id;
+    // need inheritance level
+    Boolean need_inheritance;
+    // data types
+    datas *datas_start;
+    datas *datas_end;
+    Longint datas_id;
 };
 struct entry_table_struct entry_table;
 
@@ -229,5 +278,22 @@ soco _soco_get(uint8 type, uint32 ind);
 void _utst_append(utst s);
 Longint _utst_add(uint32 line, UString str, uint8 max_bytes);
 utst _utst_get_by_label(String s);
+
+//*************************************************************
+//***********************map functions*************************
+//*************************************************************
+
+void _map_push(map **map_start,map **map_end, String key,String value);
+uint32 _map_get_items(map *map_start,String key,StrList *items);
+String _map_get_first_item(map *map_start,String key);
+map _map_index(map *map_start,uint32 ind);
+String _map_print(map *map_start);
+
+//*************************************************************
+//*******************data_types functions**********************
+//*************************************************************
+
+Longint _datas_append(uint8 type,String name,String inherit);
+datas _datas_search(String name,Longint id,Boolean name_or_id);
 
 #endif //__MAHDI_DATA_DEFINED_H

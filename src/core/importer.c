@@ -358,7 +358,6 @@ Longint _imso_append(uint8 type,String name,String path,uint32 line,Longint sour
 
   return entry_table.import_id;
 }
-
 //*************************************************************
 imso _imso_get(Longint id) {
   imso ret = {0, 0, 0, 0, 0, 0, 0, 0};

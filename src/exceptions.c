@@ -29,7 +29,34 @@ void EXP_init() {
   // EXP_define(7,ERROR_ID,"not_support_module",
   //                      ImportError,
   //                      "mahdi not support '!1@1!' as a module in '!2@2!' path");
+  //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+	//SyntaxError
+  EXP_define(1, FATAL_ID, "define_class_in", SyntaxError, "'!1@1!' is defined into another class");
+  EXP_define(2, FATAL_ID, "invalid_name_block", SyntaxError,
+                       "'!1@1!' is not a valid name for a function or class");
+  // EXP_define(1, ERROR_ID, "non_dec_stat", SyntaxError,
+  //                      "'!1@1!' is non-declaration statement outside a body");
   
+  // EXP_define(3, FATAL_ID, "redeclared_package", SyntaxError, "'!1@1!' redeclared as a package before");
+  // EXP_define(4, FATAL_ID, "param_def_val", SyntaxError,
+  //                      "'!1@1!' as a '!2@2!' function parameter can not have any default value");
+  // EXP_define(5, ERROR_ID, "reiterative_attr", SyntaxError, "'!1@1!' reiterative before as a attribute");
+  // EXP_define(6, FATAL_ID, "not_end_acod", SyntaxError, "expected '}' at end of input");
+  // EXP_define(7, FATAL_ID, "not_start_acod", SyntaxError, "expected '{' at start of input");
+  // EXP_define(8, ERROR_ID, "not_defined_struct", SyntaxError, "'!1@1!' struct can not defined in a structure");
+  // EXP_define(9, FATAL_ID, "define_func_in", SyntaxError, "'!1@1!' is defined into another function");
+  // EXP_define(10, ERROR_ID, "redeclared_var", SyntaxError,
+  //                      "'!1@1!' redeclared as a variable before in this function or package");
+  // EXP_define(11, ERROR_ID, "redeclared_func", SyntaxError,
+  //                      "'!1@1!' redeclared as a function before with same parameters");
+  // EXP_define(12, ERROR_ID, "wrong_def_var", SyntaxError,
+  //                      "'!1@1!' is a wrong expression for variable declaration");
+  // EXP_define(13, ERROR_ID, "invalid_name_var", SyntaxError, "'!1@1!' is not a valid name for a variable");
+  // EXP_define(14, ERROR_ID, "invalid_next_inst", SyntaxError, "'next' instruction not accept any parameters");
+  // EXP_define(16, FATAL_ID, "invalid_predefined_method", SyntaxError,
+  //                     "'!1@1!' is a predefined method name and not used in globally");
+  // EXP_define(17, ERROR_ID, "invalid_predefined_attr_method", SyntaxError,
+  //                       "'!1@1!' is a predefined method and can not have private or static attributes");
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   //DebuggerError
   // EXP_define(1, ERROR_ID, "not_enough_params", DebuggerError, "your input has not enough parameters");
@@ -79,33 +106,6 @@ void EXP_init() {
 
   // EXP_define(11, ERROR_ID, "review_array_out_of_range", InterruptedError,
   //                      "review array can not assign '!1@1!' to more than '!2@2!' variables");
-  // //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-	// //SyntaxError
-  // EXP_define(1, ERROR_ID, "non_dec_stat", SyntaxError,
-  //                      "'!1@1!' is non-declaration statement outside a body");
-  // EXP_define(2, FATAL_ID, "invalid_name_block", SyntaxError,
-  //                      "'!1@1!' is not a valid name for a function or package");
-  // EXP_define(3, FATAL_ID, "redeclared_package", SyntaxError, "'!1@1!' redeclared as a package before");
-  // EXP_define(4, FATAL_ID, "param_def_val", SyntaxError,
-  //                      "'!1@1!' as a '!2@2!' function parameter can not have any default value");
-  // EXP_define(5, ERROR_ID, "reiterative_attr", SyntaxError, "'!1@1!' reiterative before as a attribute");
-  // EXP_define(6, FATAL_ID, "not_end_acod", SyntaxError, "expected '}' at end of input");
-  // EXP_define(7, FATAL_ID, "not_start_acod", SyntaxError, "expected '{' at start of input");
-  // EXP_define(8, ERROR_ID, "not_defined_struct", SyntaxError, "'!1@1!' struct can not defined in a structure");
-  // EXP_define(9, FATAL_ID, "define_func_in", SyntaxError, "'!1@1!' is defined into another function");
-  // EXP_define(10, ERROR_ID, "redeclared_var", SyntaxError,
-  //                      "'!1@1!' redeclared as a variable before in this function or package");
-  // EXP_define(11, ERROR_ID, "redeclared_func", SyntaxError,
-  //                      "'!1@1!' redeclared as a function before with same parameters");
-  // EXP_define(12, ERROR_ID, "wrong_def_var", SyntaxError,
-  //                      "'!1@1!' is a wrong expression for variable declaration");
-  // EXP_define(13, ERROR_ID, "invalid_name_var", SyntaxError, "'!1@1!' is not a valid name for a variable");
-  // EXP_define(14, ERROR_ID, "invalid_next_inst", SyntaxError, "'next' instruction not accept any parameters");
-  // EXP_define(15, FATAL_ID, "define_pack_in", SyntaxError, "'!1@1!' is defined into another package");
-  // EXP_define(16, FATAL_ID, "invalid_predefined_method", SyntaxError,
-  //                     "'!1@1!' is a predefined method name and not used in globally");
-  // EXP_define(17, ERROR_ID, "invalid_predefined_attr_method", SyntaxError,
-  //                       "'!1@1!' is a predefined method and can not have private or static attributes");
   // //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 	// //ValueError
   // EXP_define(1, ERROR_ID, "val_def_var", ValueError,

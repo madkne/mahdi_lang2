@@ -10,6 +10,7 @@ void COM_exit(int32 i);
 String COM_get_path_name_ext(String path, String *ext, Boolean must_ext);
 void * COM_alloc_memory(Longint size);
 Boolean COM_is_valid_name(String name, Boolean is_array);
+uint32 COM_regex_pattern_splitter(String pattern,StrList *items);
 void COM_print_struct(uint8 which);
 
 // Boolean functions

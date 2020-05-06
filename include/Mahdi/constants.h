@@ -7,8 +7,8 @@
 
 //**************************************************define interpreter constants
 #define  APP_NAME                       "Mahdi Programming Language"
-#define  VERSION                        "0.00.036"    //X.Y.Z=> Z<100,Y<10
-#define  VERSION_NUMBER                 3          //XYZ=>(X*100)+(Y*10)+(Z/10)
+#define  VERSION                        "0.00.052"    //X.Y.Z=> Z<100,Y<10
+#define  VERSION_NUMBER                 5          //XYZ=>(X*100)+(Y*10)+(Z/10)
 #define  VERSION_NAME                   "BETA"
 #define  SLOGAN                         "Assemble all the good features of programming languages" //اجتماع تمام ویژگی های خوب زبان های برنامه نویسی
 
@@ -86,6 +86,9 @@
 #define   DEBUG_MODE                    "DebugMode"
 #define   DEBUG_QUESTION                "[mdebug]: "
 #define   DEBUG_ANSWER                  "[mdebug]$ "
+//------------------------------------------used as data type type!
+#define   BASIC_DATA_TYPE               1
+#define   CLASS_DATA_TYPE               2
 //------------------------------------------used as exit status for exit syscall
 #define   EXIT_NORMAL                   0
 #define   EXIT_ERROR                    1
@@ -164,13 +167,14 @@
 #define   HUGE_SUB_TYPE_ID              6
 //------------------------------------------used in parser-determine type of statements and block codes
 #define   FUNC_BLOCK_ID                 1
-#define   PACK_BLOCK_ID                 2
-#define   LOOP_STRU_ID                  3
-#define   IF_STRU_ID                    4
-#define   ELIF_STRU_ID                  5
-#define   ELSE_STRU_ID                  6
-#define   MANAGE_STRU_ID                7
-#define   CHOOSE_STRU_ID                8
+#define   CLASS_BLOCK_ID                2
+#define   LAMBDA_BLOCK_ID               3
+#define   LOOP_BLOCK_ID                 4
+#define   IF_BLOCK_ID                   5
+#define   ELIF_BLOCK_ID                 6
+#define   ELSE_BLOCK_ID                 7
+#define   MANAGE_BLOCK_ID               8
+#define   CHOOSE_BLOCK_ID               9
 
 
 

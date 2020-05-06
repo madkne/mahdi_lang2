@@ -139,6 +139,8 @@ void DEF_init() {
       fopen(PATH_join(interpreter_tmp_path, "TMPDIR"), "w");
     }
   }
+  //=>no need to inherit level,YET!
+  entry_table.need_inheritance = false;
   //=>init program package sources
   entry_table.program_sources = 0;
   entry_table.program_sources_len = 0;
@@ -147,6 +149,15 @@ void DEF_init() {
   entry_table.imso_start = 0;
   entry_table.imso_end = 0;
   entry_table.import_id = 1;
+  //=>init data types list
+  entry_table.datas_start = 0;
+  entry_table.datas_end = 0;
+  entry_table.datas_id = 1;
+  //=>init basic data_types
+  _datas_append(BASIC_DATA_TYPE,"str",0);
+  _datas_append(BASIC_DATA_TYPE,"num",0);
+  _datas_append(BASIC_DATA_TYPE,"bool",0);
+  _datas_append(BASIC_DATA_TYPE,"lambda",0);
 
 }
 //*************************************************************
@@ -277,6 +288,127 @@ utst _utst_get_by_label(String s) {
   return ret;
 }
 
+//*************************************************************
+//***********************map functions*************************
+//*************************************************************
+void _map_push(map **map_start,map **map_end, String key,String value) {
+  //=>search for key in map
+  map *st = (*map_start);
+  if (st != 0){
+    for (;;) {
+      if (STR_equal(st->key, key)){
+        SLIST_append(&st->items,value,st->items_len++);
+        return;
+      }
+      st = st->next;
+      if (st == 0) break;
+    }
+  }
+  //=>if not exist, append it to map!
+  map *q;
+  if(!(q = (map *) COM_alloc_memory(sizeof(map)))) return ;
 
+  STR_init(&q->key, key);
+  q->items = 0;
+  q->items_len = 0;
+  SLIST_append(&q->items,value,q->items_len++);
 
+  q->next = 0;
+
+  if ((*map_start) == 0) {
+    (*map_start) = (*map_end) = q;
+  } else {
+    (*map_end)->next = q;
+    (*map_end) = q;
+  }
+}
+//*************************************************************
+uint32 _map_get_items(map *map_start,String key,StrList *items) {
+  map *st = map_start;
+  if (st == 0) return 0;
+  for (;;) {
+    if (STR_equal(st->key, key)){
+      SLIST_init(items,st->items,st->items_len);
+      return st->items_len;
+    }
+    st = st->next;
+    if (st == 0) break;
+  }
+  return 0;
+}
+//*************************************************************
+String _map_get_first_item(map *map_start,String key) {
+  map *st = map_start;
+  if (st == 0) return 0;
+  for (;;) {
+    if (STR_equal(st->key, key)){
+      if(st->items_len>0) return st->items[0];
+      return 0;
+    }
+    st = st->next;
+    if (st == 0) break;
+  }
+  return 0;
+}
+//*************************************************************
+map _map_index(map *map_start,uint32 ind) {
+  map *st = map_start;
+  map null={0,0,0};
+  uint32 index=0;
+  if (st == 0) return null;
+  for (;;) {
+    if (index==ind)return *(st);
+    index++;
+    st = st->next;
+    if (st == 0) break;
+  }
+  return null;
+}
+//*************************************************************
+String _map_print(map *map_start){
+  map *st = map_start;
+  if (st == 0) return 0;
+  String ret="<";
+  for (;;) {
+    ret=STR_multi_append(ret," ",st->key,": ",SLIST_print(st->items,st->items_len)," ",0);
+    st = st->next;
+    if (st == 0) break;
+    ret=CH_append(ret,',');
+  }
+  return CH_append(ret,'>');
+}
+
+//*************************************************************
+//*******************data_types functions**********************
+//*************************************************************
+Longint _datas_append(uint8 type,String name,String inherit) {
+  datas *q;
+  if(!(q = (datas *) COM_alloc_memory(sizeof(datas)))) return 0;
+  q->id = ++entry_table.datas_id;
+
+  q->type = type;
+  STR_init(&q->name, name);
+  q->next = 0;
+  if (entry_table.datas_start == 0)
+    entry_table.datas_start = entry_table.datas_end = q;
+  else {
+    entry_table.datas_end->next = q;
+    entry_table.datas_end = q;
+  }
+  return entry_table.datas_id;
+}
+//*************************************************************
+datas _datas_search(String name,Longint id,Boolean name_or_id) {
+  datas null = {0, 0, 0, 0, 0};
+  //printf("!!!!!SSSSS:%s\n",name);
+  datas *st = entry_table.datas_start;
+  if (st == 0) return null;
+  for (;;) {
+    if (name_or_id && STR_equal(st->name, name)) return (*st);
+    else if (!name_or_id && st->id==id) return (*st);
+    st = st->next;
+    if (st == 0) break;
+  }
+  return null;
+}
 

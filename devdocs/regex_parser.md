@@ -53,7 +53,7 @@
 	- pkg,main()
 	- f("g",6,8)[1]
 	- encoding,json,encode([4,6])
-> [package?].[class?].[function].([params*,])\[[index?]\]
+> [package?].[class?].[function]([params*,])\[[index?]\]
 
 
 
