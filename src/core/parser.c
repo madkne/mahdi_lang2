@@ -5,22 +5,13 @@
 Longint Aline = 0; //=>current line number
 Longint Apath = 0; //=>current source id
 String Spath = 0; //=>current source path
-// Boolean is_in_func = false;
-// Boolean is_in_class=false;
 //=>detect and get tokens like '@private' in class
-uint8 pack_zone=_PARSER_PUBLIC_METHOD_ATTR;
+uint8 class_zone=_PARSER_PUBLIC_METHOD_ATTR;
 //=>get tokens like 'override','static' in class
 int32 class_method_attrs[MAX_FUNCTION_ATTRIBUTES];
 uint8 class_method_attrs_len=0;
 //=>store end parse_pars count on end
-// int8 end_of_class=false;
-// int8 end_of_func=false;
 uint16 parse_pars = 0;
-// uint8 block_id = 0; //=>index of is_in_block
-// Longint cur_class_id = 0;
-// Longint cur_func_id = 0;
-// Longint cur_block_id = 0;
-// Longint cur_lambda_id = 0;
 // Boolean is_inline_block = false;
 cycle cycles[MAX_INTO_IN_STRUCTURES];
 int32 cur_cycle = -1;
@@ -56,35 +47,30 @@ Boolean PARSE_start(){
             parse_pars++;
             //=>if in class, then set it
             if (state == _PARSER_CLASS_STATE) {
-                // is_in_class = true;
-                // end_of_class = parse_pars-1;
-                state = _PARSER_PACKAGE_STATE;
+                //=>insert new cycle
+                _cycle_insert(entry_table.datas_id, 0, 0, 0, false);
             }
-            // //=>if in function, then set it
-            // else if (state == _PARSER_FUNC_STATE) {
-            //     is_in_func = true;
-            //     end_of_func = parse_pars-1;
-            //     state = _PARSER_PACKAGE_STATE;
-            // }
-            // //=>if in block, then set it 
+            //=>if in function, then set it
+            else if (state == _PARSER_FUNC_STATE) {
+                //=>insert new cycle
+                _cycle_insert(entry_table.datas_id, entry_table.func_id, 0, 0, false);
+            }
+            //=>if in block, then set it 
             // else if (state == _PARSER_BLOCK_STATE && block_id > 0) {
             //     /*is_in_stru[block_id - 1].is_active = true;
             //     is_in_stru[block_id - 1].stru_pars = parse_pars - 1;*/
             //     state = _PARSER_PACKAGE_STATE;
             // }
+            //=>reset state
+            state = _PARSER_PACKAGE_STATE;
+            
         } else if (STR_CH_equal(Acode, '}')) {
             parse_pars--;
-            //=>if end of class
+            //=>if end of class or function or block or lambda
             if(cycles[cur_cycle].start_pars == parse_pars){
                 //=>return back top cycle
                 _cycle_remove();
             }
-            //=>if end of function
-            // if (end_of_func==parse_pars) {
-            //     end_of_func=0;
-            //     is_in_func = false;
-            //     cur_func_id = cur_block_id = 0;
-            // }
             //=>if end of structure
             // if (block_id > 0) {
                 // uint8 c = block_id;
@@ -102,7 +88,7 @@ Boolean PARSE_start(){
             // }
         }
         //=>if token is class keyword
-        if (state == 0 && STR_equal(Acode, "class")) {
+        if (state == _PARSER_PACKAGE_STATE && STR_equal(Acode, "class")) {
             //if in another class
             if (cycles[cur_cycle].class_id > 0) {
                 String name = 0;
@@ -111,57 +97,59 @@ Boolean PARSE_start(){
                 break;
             }
             //=>reset class vars
-            pack_zone=_PARSER_PUBLIC_METHOD_ATTR;
+            class_zone=_PARSER_PUBLIC_METHOD_ATTR;
             ILIST_reset(class_method_attrs,MAX_FUNCTION_ATTRIBUTES);
             class_method_attrs_len=0;
             state = _PARSER_CLASS_STATE;
+            //=>manage class header
             PARSE_manage_class(&i);
             continue;
         }
-        //=>if is in a class and out of any functions
-        // if(cur_class_id>0 && cur_func_id==0){
-        //     Boolean exist=false;
-        //     if(class_method_attrs_len==3) pack_method_attrs_len=0;
-        //     //=>check for zone methods in package
-        //     if(STR_equal(Acode,"@public")){
-        //         class_zone = _PARSER_PUBLIC_METHOD_ATTR;
-        //         exist=true;
-        //     }else if(STR_equal(Acode,"@private")){
-        //         class_zone = _PARSER_PRIVATE_METHOD_ATTR;
-        //         exist=true;
-        //     }
-        //     //=>get method attributes
-        //     else if(STR_equal(Acode,"override")){
-        //         pack_method_attrs[pack_method_attrs_len++]=OVERRIDE_METHOD_FATTR;
-        //         exist=true;
-        //     }
-        //     else if(STR_equal(Acode,"static")){
-        //         pack_method_attrs[pack_method_attrs_len++]=STATIC_METHOD_FATTR;
-        //         exist=true;
-        //     }
-        //     if(exist) continue;
-        // }
+        //=>if token is func keyword
+        if (state == _PARSER_PACKAGE_STATE && STR_equal(Acode, "func") && i + 1 < entry_table.soco_tokens_count) {
+            //if in another func
+            if (cycles[cur_cycle].func_id > 0) {
+                EXP_print_error(Aline, "define_func_in", Spath, _soco_get(TOKENS_SOURCE_CODE, i + 1).code, 0, "PARSE_start");
+                break;
+            }
+            state = _PARSER_FUNC_STATE;
+            //=>manage function header
+            PARSE_manage_function(&i);
+            continue;
+        }
+        //=>if is in a class and out of any methods
+        if(cycles[cur_cycle].class_id > 0 && cycles[cur_cycle].func_id == 0){
+            Boolean exist=false;
+            if(class_method_attrs_len==3) class_method_attrs_len=0;
+            //=>check for zone methods in class
+            if(STR_equal(Acode,"@public")){
+                class_zone = _PARSER_PUBLIC_METHOD_ATTR;
+                exist=true;
+            }else if(STR_equal(Acode,"@private")){
+                class_zone = _PARSER_PRIVATE_METHOD_ATTR;
+                exist=true;
+            }else if(STR_equal(Acode,"@init")){
+                class_zone = _PARSER_INIT_METHOD_ATTR;
+                exist=true;
+            }
+            //=>get method attributes
+            else if(STR_equal(Acode,"override")){
+                class_method_attrs[class_method_attrs_len++]=_PARSER_OVERRIDE_METHOD_ATTR;
+                exist=true;
+            }
+            else if(STR_equal(Acode,"static")){
+                class_method_attrs[class_method_attrs_len++]=_PARSER_STATIC_METHOD_ATTR;
+                exist=true;
+            }
+            if(exist) continue;
+        }
         //=>if token is import keyword
-        // if (state == 0 && STR_equal("import", Acode)) {
-        //     i++;
-        //     PARSER_manage_import(&i);
-        //     continue;
-        // }
+        if (state == _PARSER_PACKAGE_STATE && STR_equal("import", Acode)) {
+            PARSE_manage_import(&i);
+            continue;
+        }
         
-        // //=>if token is func keyword
-        // if (state == 0 && STR_equal(Acode, "func") && i + 3 < entry_table.soco_tokens_count) {
-        //     //if is_in_func
-        //     if (is_in_func) {
-        //         String name = 0;
-        //         STR_init(&name, _soco_get(TOKENS_SOURCE_CODE, i + 1).code);
-        //         EXP_print_error(Aline, "define_func_in", entry_table.current_source_path, name, 0, "PARSER_analyze_source_code");
-        //         break;
-        //     }
-        //     state = 1;
-        //     i++;
-        //     PARSER_manage_function(&i);
-        //     continue;
-        // }
+        
         // //=>if token is a if,elif,loop,... keywords 
         // if (state == 0 && STR_search(block_instructions, Acode,StrArraySize(block_instructions))) {
         //     state = 2;
@@ -212,7 +200,7 @@ Boolean PARSE_start(){
 /**
  * get i pointer of token index in source code and detect class header and append it to blst struct
  * @author madkne
- * @version 1.1
+ * @version 1.2
  * @since 2020.5.6
  * @param i : (pointer) index of token 
  * @return void
@@ -222,7 +210,7 @@ void PARSE_manage_class(uint32 *i) {
     map *mapi = 0;
     // debug("class_pointer:%i",*i);
     //=>parse class header by regex
-    mapi = PARSE_regex(i,_PARSER_CLASS_HEADER);
+    mapi = PARSE_regex(i,_PARSER_CLASS_HEADER,0);
     // debug("class header: %s",_map_print(mapi));
     //=>get vars of class header
     String class_name = _map_get_first_item(mapi,"name");
@@ -237,11 +225,113 @@ void PARSE_manage_class(uint32 *i) {
         entry_table.need_inheritance=true;
     }
     //=>append to datas struct
-    _datas_append(CLASS_DATA_TYPE,class_name,class_inherit);
+    _datas_append(CLASS_DATA_TYPE,class_name,entry_table.program_package_id,class_inherit);
     
 }
+
 //******************************************************
-map *PARSE_regex(uint32 *i,String pattern){
+/**
+ * get i pointer of token index in source code and detect function header and append it to fuhs struct
+ * @author madkne
+ * @version 1.6
+ * @update
+ * @since 2020.5.6
+ * @param i : (pointer) index of token 
+ * @return void
+ */
+void PARSE_manage_function(uint32 *i){
+     //=>init vars
+    map *mapi = 0;
+    StrList func_params = 0;
+    int32 func_attrs[MAX_FUNCTION_ATTRIBUTES];
+    ILIST_reset(func_attrs,MAX_FUNCTION_ATTRIBUTES);
+    //=>parse function header by regex
+    mapi = PARSE_regex(i,_PARSER_FUNCTION_HEADER,0);
+    // debug("function header: %s",_map_print(mapi));
+    //=>get vars of function header
+    String func_name = _map_get_first_item(mapi,"name");
+    uint32 func_params_len = _map_get_items(mapi,"params",&func_params);
+    //=>verify function name
+    for (uint32 i = 0; i < STR_length(func_name); i++) {
+        //=>if chars of name is valid, ignore it like _var,var,@var,var34
+        if ((func_name[i] >= '0' && func_name[i] <= '9' && i>0) || (func_name[i] >= 'A' && func_name[i] <= 'Z') || (func_name[i] >= 'a' && func_name[i] <= 'z') || func_name[i] == '_' ) {
+            continue;
+        } else {
+            EXP_print_error(Aline,"invalid_name_block",Spath,func_name,0,"PARSE_manage_function");
+            return;
+        }
+    }
+    //=>check function name not same with built-in function names
+    if(_bifs_get_by_name(func_name).func_name!=0){
+        //TODO:fetal
+        debug("PAR#4566\n");
+        return;
+    }
+    //=>set function attributes if in a class
+    if(cycles[cur_cycle].class_id > 0){
+        for (uint8 i = 0; i < class_method_attrs_len; i++){
+            func_attrs[i]=class_method_attrs[i]; 
+        }
+        func_attrs[class_method_attrs_len]=class_zone;
+    }
+    //=>empty method attributes array 
+    ILIST_reset(class_method_attrs,MAX_FUNCTION_ATTRIBUTES);
+    class_method_attrs_len=0;
+    debug("func_header:%s;%s;%i\n",func_name,SLIST_print(func_params,func_params_len),func_params_len);
+    //=>append to fuhs list
+    _fuhs_append(entry_table.program_package_id, cycles[cur_cycle].class_id, func_name, func_params, func_params_len, func_attrs, Aline, Apath);
+}
+//******************************************************
+/**
+ * get i pointer of token index in source code and detect import instruction and append it to imso struct
+ * @author madkne
+ * @version 1.1
+ * @since 2020.5.7
+ * @param i : (pointer) index of token 
+ * @return void
+ */ 
+void PARSE_manage_import(uint32 *i) {
+    //=>init vars
+    map *mapi = 0;
+    uint8 import_typ = IMPORT_FILE;
+    StrList import_names = 0;
+    StrList import_objects = 0;
+    int8 err_code = 0;
+    //=>parse import statement by regex
+    mapi = PARSE_regex(i,_PARSER_IMPORT_STATEMENT,";");
+    debug("import statement: %s",_map_print(mapi));
+    //=>get vars of class header
+    String import_type = _map_get_first_item(mapi,"type");
+    uint32 import_names_len = _map_get_items(mapi,"name",&import_names);
+    uint32 import_objects_len = _map_get_items(mapi,"objects",&import_objects);
+    //=>get import type
+    if(STR_equal(import_type,"mod")) import_typ = IMPORT_MODULE;
+    else if(STR_equal(import_type,"pack")) import_typ = IMPORT_PACKAGE;
+    else err_code = 1;
+    //=>check for import errors
+    if(import_names_len == 0 || err_code != 0){
+        EXP_print_error(Aline, "import_syntax_error", Spath, 0, 0,"PARSE_manage_import");
+    }
+    //=>if no any errors, then append to imso struct
+    else{
+        //=>create an import source node for every names
+        for (uint32 i = 0; i < import_names_len; i++){
+            _imso_append(import_typ,entry_table.program_package_id,import_names[i],import_objects,import_objects_len,Aline,Apath);
+        }
+    }
+}
+
+//******************************************************
+/**
+ * get a pattern and index of tokens list and match by pattern and return a map
+ * @param uint32 *i
+ * @param String pattern
+ * @param String end_str : can be null
+ * @author madkne
+ * @since 2020.5.7
+ * @version 1.0
+ */ 
+map *PARSE_regex(uint32 *i,String pattern,String end_str){
     //=>init vars
     StrList pat = 0;
     map *start = 0;
@@ -299,11 +389,12 @@ map *PARSE_regex(uint32 *i,String pattern){
             //=>if var is multiple
             if(pat_multiple_split != '0'){
                 //=>check if pat item not have any matches
-                if(pat_ind+1 < pat_len && STR_equal(pat[pat_ind+1],token_item.code)){
+                if(pat_ind+1 < pat_len && STR_equal(pat[pat_ind+1],token_item.code)) {
                     next_pat_ind = true;
                     (*i)--;
-                }else{
+                }else {
                     String value = 0;
+                    Boolean is_end = false;
                     for (; *i < entry_table.soco_tokens_count; (*i)++) {
                         //=>get token
                         soco token_item = _soco_get(TOKENS_SOURCE_CODE, *i);
@@ -317,12 +408,19 @@ map *PARSE_regex(uint32 *i,String pattern){
                             (*i)--;
                             break;
                         }
+                        //=>check if match by end
+                        else if(STR_equal(token_item.code,end_str)){
+                            is_end = true;
+                            break;
+                        }
                         //=>append tokens to value
                         value = STR_append(value,token_item.code);
                     }
                     //=>append value to map
                     _map_push(&start,&end,pat_var_name,value);
                     debug("var multiple:{%s}=%s",pat_var_name,value);
+                    //=>check for match end string
+                    if(is_end) break;
                 }
                 
             }
@@ -464,7 +562,7 @@ void _cycle_insert(Longint class_id,Longint func_id,Longint lambda_id,Longint bl
     //=>init vars
     Longint parent_lambda_id;
     Longint parent_block_id;
-    uint32 start_pars = parse_pars;
+    uint32 start_pars = parse_pars - 1;
     //=>get parent info, if exist!
     if(cur_cycle >= 0){
         parent_block_id = cycles[cur_cycle].block_id;

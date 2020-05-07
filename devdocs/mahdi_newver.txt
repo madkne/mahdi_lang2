@@ -105,6 +105,7 @@ MAHDI structure: (linux)
 - every project(main project or package) have a package name!
 - mahdi just browse *.mah files
 - first statement of every mah file is : `package [app-name]`
+- every modules have just one class! and imported under program package!
 
 -----------------config keyword
 - config just in outof any classes and functions

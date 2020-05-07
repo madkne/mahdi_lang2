@@ -7,7 +7,7 @@
 
 //**************************************************define interpreter constants
 #define  APP_NAME                       "Mahdi Programming Language"
-#define  VERSION                        "0.00.052"    //X.Y.Z=> Z<100,Y<10
+#define  VERSION                        "0.00.058"    //X.Y.Z=> Z<100,Y<10
 #define  VERSION_NUMBER                 5          //XYZ=>(X*100)+(Y*10)+(Z/10)
 #define  VERSION_NAME                   "BETA"
 #define  SLOGAN                         "Assemble all the good features of programming languages" //اجتماع تمام ویژگی های خوب زبان های برنامه نویسی
@@ -138,6 +138,10 @@
 //------------------------------------------used for soco struct in append and the other functions
 #define MAIN_SOURCE_CODE                1
 #define TOKENS_SOURCE_CODE              2
+//------------------------------------------used by import sources type struct
+#define   IMPORT_FILE                   1
+#define   IMPORT_PACKAGE                2 
+#define   IMPORT_MODULE                 4
 //------------------------------------------
 #define PRINT_IMPORT_ST                 1
 #define PRINT_EXCEPTIONS_ST             2
@@ -146,17 +150,14 @@
 #define PRINT_TOKENS_SOURCE_ST          5
 #define PRINT_FUNC_ST                   6
 #define PRINT_PACK_ST                   7
-#define PRINT_INSTRU_ST                 8
-#define PRINT_STRU_ST                   9
+#define PRINT_BLOCK_ST                  9
 #define PRINT_FUNC_PACK_PARAMS_ST       10
-#define PRINT_STRUCT_DES_ST             11
 #define PRINT_FUNCTIONS_STACK_ST        12
 #define PRINT_STRUCTURES_STACK_ST       13
 #define PRINT_CONDITION_LEVEL_ST        14
 #define PRINT_LOOP_LEVEL_ST             15
 #define PRINT_DATA_TYPES_ST             16
 #define PRINT_INHERIT_ST                17
-#define PRINT_MODULE_PACKFUNCS_ST       18
 #define PRINT_CONFIG_ST                 19
 //------------------------------------------
 #define   BOOL_SUB_TYPE_ID              1

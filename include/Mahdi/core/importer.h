@@ -14,7 +14,7 @@ Boolean IMPORT_open_file(String path,Longint source_id);
 //*************************************************************
 //*******************import_inst functions*********************
 //*************************************************************
-Longint _imso_append(uint8 type,String name,String path,uint32 line,Longint source_id);
+Longint _imso_append(uint8 type,Longint pack_id,String path,StrList objects,uint32 objects_len,uint32 line,Longint source_id);
 imso _imso_get(Longint id);
 
 

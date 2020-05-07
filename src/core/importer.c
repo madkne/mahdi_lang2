@@ -139,7 +139,7 @@ Boolean IMPORT_start(){
         //=>generate path from source
         String path = PATH_join(program_root,entry_table.program_sources[i]);
         //=>append source to import sources list and get its id
-        Longint source_id = _imso_append('f',entry_table.program_package,path,0,0);
+        Longint source_id = _imso_append('f',entry_table.program_package_id,path, 0, 0, 0, 0);
         //=>open file and fill soco struct
         if(IMPORT_open_file(path,source_id)){
             success_imports++;
@@ -338,15 +338,16 @@ Boolean IMPORT_open_file(String path,Longint source_id) {
 //*************************************************************
 //*******************import_inst functions*********************
 //*************************************************************
-Longint _imso_append(uint8 type,String name,String path,uint32 line,Longint source_id) {
+Longint _imso_append(uint8 type,Longint pack_id,String path,StrList objects,uint32 objects_len,uint32 line,Longint source_id) {
   imso *q;
   if(!(q = (imso *) COM_alloc_memory(sizeof(imso)))) return 0;
   q->id = ++entry_table.import_id;
   q->type = type;
-  STR_init(&q->name,name);
+  q->pack_id = pack_id;
   STR_init(&q->path,path);
   q->line = line;
-  q->err_code = 0;
+  SLIST_init(&q->objects,objects,objects_len);
+  q->objects_len = objects_len;
   q->source_id = source_id;
   q->next = 0;
   if (entry_table.imso_start == 0) {
@@ -360,7 +361,7 @@ Longint _imso_append(uint8 type,String name,String path,uint32 line,Longint sour
 }
 //*************************************************************
 imso _imso_get(Longint id) {
-  imso ret = {0, 0, 0, 0, 0, 0, 0, 0};
+  imso ret = {0, 0, 0, 0, 0, 0, 0, 0, 0};
   imso *tmp1 = entry_table.imso_start;
   for (;;) {
     if (tmp1->id == id) {

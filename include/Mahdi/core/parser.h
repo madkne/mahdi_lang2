@@ -9,7 +9,7 @@
 // -----------------------------
 #define _PARSER_PACKAGE_STATEMENT       "package[name]"
 #define _PARSER_CLASS_HEADER            "class[name]([parent?])"
-#define _PARSER_FUNCTION_HEADER         "[attrs* ]func[name]([params*,])"
+#define _PARSER_FUNCTION_HEADER         "func[name]([params*,])"
 #define _PARSER_BLOCK_HEADER            "[name]([params?])"
 #define _PARSER_IMPORT_STATEMENT        "import[type]:[name*,]:[objects*,]"
 #define _PARSER_CONFIG_STATEMENT        "config[name]=[value]"
@@ -19,6 +19,7 @@
 #define _PARSER_PRIVATE_METHOD_ATTR     2
 #define _PARSER_OVERRIDE_METHOD_ATTR    3
 #define _PARSER_STATIC_METHOD_ATTR      4
+#define _PARSER_INIT_METHOD_ATTR        5
 // -----------------------------
 #define _PARSER_PACKAGE_STATE           0
 #define _PARSER_CLASS_STATE             1
@@ -28,9 +29,11 @@
 // -----------------------------
 Boolean PARSE_start();
 void PARSE_manage_class(uint32 *i);
+void PARSE_manage_function(uint32 *i);
+void PARSE_manage_import(uint32 *i);
 
 void PARSE_get_tokens();
-map *PARSE_regex(uint32 *i,String pattern);
+map *PARSE_regex(uint32 *i,String pattern,String end_str);
 
 //*************************************************************
 //**********************cycle functions************************

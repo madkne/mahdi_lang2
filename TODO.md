@@ -21,10 +21,11 @@ TODO
 - [x] parsing tokens
 - [x] create regex expression parser
 - [x] parsing class headers
-- [ ] parsing function headers
-- [ ] parsing function attributes
-- [ ] parsing import statement
+- [x] parsing function headers
+- [x] parsing function attributes
+- [x] parsing import statement
 - [ ] parsing config statement
+- [ ] parsing class property variables
 - [x] config colors on console for print errors
 - [ ] parsing if,elif,loop,... blocks
 - [ ] manage instruction orders
@@ -67,9 +68,11 @@ TODO
 - [ ] delete var in memory
 - [ ] call static class method
 - [ ] implement if,elif,else blocks
+- **importer**
 - [ ] init and build stdio module
 - [ ] ignore duplicate import modules,mahpacks
 - [ ] load stdio module
+- **runmgr**
 - [ ] call methods of stdio module
 - [ ] **run "Hello world" program**
 - [ ] implement lambda block

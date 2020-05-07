@@ -9,20 +9,20 @@ void EXP_init() {
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   //CommandError
   EXP_define(1, FATAL_ID, "bad_exit", CommandError, "returned 1 exit status");
-  EXP_define(2, ERROR_ID, "unknown_opt", CommandError, "unknown option '!1@1!'");
+  EXP_define(2, ERROR_ID, "unknown_opt", CommandError, "unknown option `!1@1!`");
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
   //OSError
-  EXP_define(1, WARNING_ID, "not_enough_memory", OSError, "not enough memory to allocate '!1@1!' bytes");
+  EXP_define(1, WARNING_ID, "not_enough_memory", OSError, "not enough memory to allocate `!1@1!` bytes");
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 	//ImportError
   EXP_define(1, FATAL_ID, "not_import_sources", ImportError,
-                       "can't find package sources of '!1@1!'");
+                       "can't find package sources of `!1@1!`");
   EXP_define(2, ERROR_ID, "bad_place_using_utf8", ImportError,
                        "using UTF-8 in bad place or bad character in `!1@1!`");
-  EXP_define(3, ERROR_ID, "not_open_file", ImportError, "can't open file '!1@1!'");
-  EXP_define(4, ERROR_ID, "file_not_support_utf8", ImportError, "'!1@1!' file not support UTF-8");
-  // EXP_define(4, ERROR_ID, "import_syntax_error", ImportError,
-  //                      "A syntax error occurs for import instruction");
+  EXP_define(3, ERROR_ID, "not_open_file", ImportError, "can't open file `!1@1!`");
+  EXP_define(4, ERROR_ID, "file_not_support_utf8", ImportError, "`!1@1!` file not support UTF-8");
+  EXP_define(4, ERROR_ID, "import_syntax_error", ImportError,
+                       "A syntax error occurs for import instruction");
   // EXP_define(5, ERROR_ID, "import_not_support_protocol", ImportError,
   //                      "not support the protocol in this path '!1@1!' import instruction");
   // EXP_define(6, ERROR_ID, "can_not_load_module", ImportError, "can not load a module in '!1@1!' path");
@@ -31,9 +31,10 @@ void EXP_init() {
   //                      "mahdi not support '!1@1!' as a module in '!2@2!' path");
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 	//SyntaxError
-  EXP_define(1, FATAL_ID, "define_class_in", SyntaxError, "'!1@1!' is defined into another class");
+  EXP_define(1, FATAL_ID, "define_class_in", SyntaxError, "`!1@1!` is defined into another class");
   EXP_define(2, FATAL_ID, "invalid_name_block", SyntaxError,
-                       "'!1@1!' is not a valid name for a function or class");
+                       "`!1@1!` is not a valid name for a function or class");
+  EXP_define(3, FATAL_ID, "define_func_in", SyntaxError, "`!1@1!` function is defined into another function");
   // EXP_define(1, ERROR_ID, "non_dec_stat", SyntaxError,
   //                      "'!1@1!' is non-declaration statement outside a body");
   
@@ -44,7 +45,6 @@ void EXP_init() {
   // EXP_define(6, FATAL_ID, "not_end_acod", SyntaxError, "expected '}' at end of input");
   // EXP_define(7, FATAL_ID, "not_start_acod", SyntaxError, "expected '{' at start of input");
   // EXP_define(8, ERROR_ID, "not_defined_struct", SyntaxError, "'!1@1!' struct can not defined in a structure");
-  // EXP_define(9, FATAL_ID, "define_func_in", SyntaxError, "'!1@1!' is defined into another function");
   // EXP_define(10, ERROR_ID, "redeclared_var", SyntaxError,
   //                      "'!1@1!' redeclared as a variable before in this function or package");
   // EXP_define(11, ERROR_ID, "redeclared_func", SyntaxError,

@@ -157,6 +157,18 @@ typedef struct utf8_strings_struct {
 
     struct utf8_strings_struct *next;
 } utst;
+//****************************packages struct
+/**
+ * (importer) 
+ */ 
+typedef struct package_struct {
+    Longint id;
+    String name; //required
+    //other package meta data
+    
+
+    struct package_struct *next;
+} pack;
 //****************************import struct
 /**
  * (importer) 
@@ -164,9 +176,10 @@ typedef struct utf8_strings_struct {
 typedef struct import_source_struct {
     Longint id;
     uint8 type; //mod(m)|pack(p)|file(f)
-    String name; //required
+    Longint pack_id; //required
     String path; //required
-    uint8 err_code;
+    StrList objects; //just for packages
+    uint32 objects_len;
 
     uint32 line;
     Longint source_id; //=>id of parent imin
@@ -202,11 +215,32 @@ typedef struct cycle_struct {
 typedef struct data_types_struct {
   Longint id;
   uint8 type; //basic,class
+  Longint pack_id;
   String name;
   String inherit;
 
   struct data_types_struct *next;
 } datas;
+//****************************function_headers struct
+/**
+ * (parser) store all decalred functions
+ */ 
+typedef struct function_headers_struct {
+  Longint id;
+  Longint pack_id;
+  Longint class_id;
+  String name;
+  StrList params;
+  StrList param_types;
+  StrList param_defaults;
+  uint32 params_len;
+  Boolean is_simplified;
+  IntList func_attrs; //length is MAX_FUNCTION_ATTRIBUTES
+  
+  uint32 line;
+  Longint source_id; //=>id of parent imin
+  struct function_headers_struct *next;
+} fuhs;
 //****************************entry_table struct
 struct entry_table_struct {
     // exceptions struct
@@ -226,10 +260,15 @@ struct entry_table_struct {
     bifs *bifs_start;
     bifs *bifs_end;
     uint32 bifs_len;
+    // packages list
+    pack *pack_start;
+    pack *pack_end;
+    Longint pack_id;
     // program package source files
     String program_package;
     StrList program_sources;
     uint32 program_sources_len;
+    Longint program_package_id;
     // program source codes
     soco *soco_main_start;
     soco *soco_main_end;
@@ -253,6 +292,10 @@ struct entry_table_struct {
     datas *datas_start;
     datas *datas_end;
     Longint datas_id;
+    // function headers
+    fuhs *fuhs_start;
+    fuhs *fuhs_end;
+    Longint func_id;
 };
 struct entry_table_struct entry_table;
 
@@ -290,10 +333,22 @@ map _map_index(map *map_start,uint32 ind);
 String _map_print(map *map_start);
 
 //*************************************************************
+//*********************packages functions**********************
+//*************************************************************
+
+Longint _pack_init(String pack_name);
+
+//*************************************************************
 //*******************data_types functions**********************
 //*************************************************************
 
-Longint _datas_append(uint8 type,String name,String inherit);
-datas _datas_search(String name,Longint id,Boolean name_or_id);
+Longint _datas_append(uint8 type,String name,Longint pack_id,String inherit);
+// datas _datas_search(String name,Longint id,Boolean name_or_id);
+
+//*************************************************************
+//***************function headers functions********************
+//*************************************************************
+
+Longint _fuhs_append(Longint pack_id,Longint class_id,String name,StrList params,uint32 params_len,IntList attrs,uint32 line,Longint source_id);
 
 #endif //__MAHDI_DATA_DEFINED_H

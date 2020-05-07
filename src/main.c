@@ -93,6 +93,7 @@ Boolean INTR_start() {
   if(! PARSE_start()){
     return false;
   }
+  //=>import all mahpacks,modules
   //-----------------------solve inherits packages
 	// if(entry_table.need_inheritance){
 	// 	STR_init(&interpreter_level, "inherit");

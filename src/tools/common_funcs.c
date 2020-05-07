@@ -278,26 +278,38 @@ void COM_print_struct(uint8 which) {
     if (tmp1 == 0) return;
     printf("=====Print data_types_struct :\n");
     for (;;) {
-      printf("[id:%li,type:%i]:%s (%s)\n", tmp1->id,tmp1->type,tmp1->name,tmp1->inherit);
+      printf("[id:%li,type:%i,pid:%li]:%s (%s)\n", tmp1->id,tmp1->type,tmp1->pack_id,tmp1->name,tmp1->inherit);
+      tmp1 = tmp1->next;
+      if (tmp1 == 0) break;
+    }
+    printf("=====End printed\n");
+  } 
+  //=>print all nodes of fuhs funcs struct (functions)
+  if (which == 0 || which == PRINT_FUNC_ST) {
+    fuhs *tmp1 = entry_table.fuhs_start;
+    if (tmp1 == 0) return;
+    printf("=====Print func_headers_struct :\n");
+    for (;;) {
+      printf("[id:%li,pid:%li,cid:%li],name:%s,params:%s [attrs:%s]\n", tmp1->id,tmp1->pack_id,tmp1->class_id, tmp1->name, SLIST_print(tmp1->params, tmp1->params_len),ILIST_print(tmp1->func_attrs,MAX_FUNCTION_ATTRIBUTES));
+      tmp1 = tmp1->next;
+      if (tmp1 == 0) break;
+    }
+    printf("=====End printed\n");
+  } 
+  //=>print all nodes of imso struct (import instruction)
+  if (which == 0 || which == PRINT_IMPORT_ST) {
+    imso *tmp1 = entry_table.imso_start;
+    if (tmp1 == 0) return;
+    printf("=====Print import_inst_struct :\n");
+    for (;;) {
+      printf("[id:%li,type:%i,pid:%li] path:%s,objects:%s,line:%i,source:[%li]\n", tmp1->id, tmp1->type,tmp1->pack_id,tmp1->path,SLIST_print(tmp1->objects,tmp1->objects_len), tmp1->line,tmp1->source_id);
       tmp1 = tmp1->next;
       if (tmp1 == 0) break;
     }
     printf("=====End printed\n");
   } 
 
-
-  //   //=>print all nodes of imin struct (import instruction)
-  //   if (which == 0 || which == PRINT_IMPORT_ST) {
-  //     imin *tmp1 = entry_table.import_start;
-  //     if (tmp1 == 0) return;
-  //     printf("=====Print import_inst_struct :\n");
-  //     for (;;) {
-  //       printf("Active:%i,id:%li,type:%i,name:%s,packs:%s,funcs:%s,path:%s,line:%i,source:[%i][ERR%i]\n", tmp1->is_active, tmp1->id, tmp1->type,tmp1->name,SLIST_print(tmp1->packages,tmp1->pack_len),SLIST_print(tmp1->functions,tmp1->func_len),tmp1->path, tmp1->line,tmp1->source_index,tmp1->err_code);
-  //       tmp1 = tmp1->next;
-  //       if (tmp1 == 0) break;
-  //     }
-  //     printf("=====End printed\n");
-  //   } 
+  
   //   //=>print all nodes of coin struct (config instruction)
   //   if (which == 0 || which == PRINT_CONFIG_ST) {
   //     coin *tmp1 = entry_table.config_start;
@@ -334,18 +346,7 @@ void COM_print_struct(uint8 which) {
   // //     printf("=====End printed\n");
   //   // } 
 
-  //   //=>print all nodes of blst funcs struct (functions)
-  //   else if (which == 0 || which == PRINT_FUNC_ST) {
-  //     blst *tmp1 = entry_table.blst_func_start;
-  //     if (tmp1 == 0) return;
-  //     printf("=====Print func_block_struct :\n");
-  //     for (;;) {
-  //       printf("[id:%li,pid:%li],%s,name:%s,params:%s\n", tmp1->id,tmp1->pack_id,ILIST_print(tmp1->func_attrs,MAX_FUNCTION_ATTRIBUTES), tmp1->label, SLIST_print(tmp1->params, tmp1->params_len));
-  //       tmp1 = tmp1->next;
-  //       if (tmp1 == 0) break;
-  //     }
-  //     printf("=====End printed\n");
-  //   } 
+  
   //   //=>print all nodes of fpp struct (function params and package attrs)
   //   else if (which == 0 || which == PRINT_FUNC_PACK_PARAMS_ST) {
   //     fpp *tmp1 = entry_table.fpp_start;

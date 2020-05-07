@@ -6,6 +6,8 @@
 package myapp1
 
 GlobalVar = 0;
+import mod:stdio,os
+import pack:compress:gzip,tar
 
 func _bootup_(){
     t=5

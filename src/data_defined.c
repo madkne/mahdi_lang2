@@ -139,11 +139,18 @@ void DEF_init() {
       fopen(PATH_join(interpreter_tmp_path, "TMPDIR"), "w");
     }
   }
-  //=>no need to inherit level,YET!
-  entry_table.need_inheritance = false;
+  //=>init packages list
+  entry_table.pack_start = 0;
+  entry_table.pack_end = 0;
+  entry_table.pack_id = 1;
   //=>init program package sources
+  entry_table.program_package_id = 0;
   entry_table.program_sources = 0;
   entry_table.program_sources_len = 0;
+  //=>append program package to packages list
+  entry_table.program_package_id = _pack_init(entry_table.program_package);
+  //=>no need to inherit level,YET!
+  entry_table.need_inheritance = false;
   // debug("fffff:%s\n%s\n%s\n",interpreter_path,interpreter_tmp_path,project_root);
   //=>init import sources list
   entry_table.imso_start = 0;
@@ -153,11 +160,15 @@ void DEF_init() {
   entry_table.datas_start = 0;
   entry_table.datas_end = 0;
   entry_table.datas_id = 1;
+  //=>init function headers list
+  entry_table.fuhs_start = 0;
+  entry_table.fuhs_end = 0;
+  entry_table.func_id = 1;
   //=>init basic data_types
-  _datas_append(BASIC_DATA_TYPE,"str",0);
-  _datas_append(BASIC_DATA_TYPE,"num",0);
-  _datas_append(BASIC_DATA_TYPE,"bool",0);
-  _datas_append(BASIC_DATA_TYPE,"lambda",0);
+  _datas_append(BASIC_DATA_TYPE,"str",0,0);
+  _datas_append(BASIC_DATA_TYPE,"num",0,0);
+  _datas_append(BASIC_DATA_TYPE,"bool",0,0);
+  _datas_append(BASIC_DATA_TYPE,"lambda",0,0);
 
 }
 //*************************************************************
@@ -379,15 +390,35 @@ String _map_print(map *map_start){
 }
 
 //*************************************************************
+//*********************packages functions**********************
+//*************************************************************
+Longint _pack_init(String pack_name){
+  pack *q;
+  if(!(q = (pack *) COM_alloc_memory(sizeof(pack)))) return 0;
+  q->id = ++entry_table.pack_id;
+
+  STR_init(&q->name, pack_name);
+  q->next = 0;
+  if (entry_table.pack_start == 0)
+    entry_table.pack_start = entry_table.pack_end = q;
+  else {
+    entry_table.pack_end->next = q;
+    entry_table.pack_end = q;
+  }
+  return entry_table.pack_id;
+}
+//*************************************************************
 //*******************data_types functions**********************
 //*************************************************************
-Longint _datas_append(uint8 type,String name,String inherit) {
+Longint _datas_append(uint8 type,String name,Longint pack_id,String inherit) {
   datas *q;
   if(!(q = (datas *) COM_alloc_memory(sizeof(datas)))) return 0;
   q->id = ++entry_table.datas_id;
 
   q->type = type;
   STR_init(&q->name, name);
+  q->pack_id = pack_id;
+  STR_init(&q->inherit, inherit);
   q->next = 0;
   if (entry_table.datas_start == 0)
     entry_table.datas_start = entry_table.datas_end = q;
@@ -398,17 +429,47 @@ Longint _datas_append(uint8 type,String name,String inherit) {
   return entry_table.datas_id;
 }
 //*************************************************************
-datas _datas_search(String name,Longint id,Boolean name_or_id) {
-  datas null = {0, 0, 0, 0, 0};
-  //printf("!!!!!SSSSS:%s\n",name);
-  datas *st = entry_table.datas_start;
-  if (st == 0) return null;
-  for (;;) {
-    if (name_or_id && STR_equal(st->name, name)) return (*st);
-    else if (!name_or_id && st->id==id) return (*st);
-    st = st->next;
-    if (st == 0) break;
+// datas _datas_search(String name,Longint id,Boolean name_or_id) {
+//   datas null = {0, 0, 0, 0, 0};
+//   //printf("!!!!!SSSSS:%s\n",name);
+//   datas *st = entry_table.datas_start;
+//   if (st == 0) return null;
+//   for (;;) {
+//     if (name_or_id && STR_equal(st->name, name)) return (*st);
+//     else if (!name_or_id && st->id==id) return (*st);
+//     st = st->next;
+//     if (st == 0) break;
+//   }
+//   return null;
+// }
+//*************************************************************
+//***************function headers functions********************
+//*************************************************************
+Longint _fuhs_append(Longint pack_id,Longint class_id,String name,StrList params,uint32 params_len,IntList attrs,uint32 line,Longint source_id){
+  fuhs *q;
+  if(!(q = (fuhs *) COM_alloc_memory(sizeof(fuhs)))) return 0;
+  q->id = ++entry_table.func_id;
+
+  q->pack_id = pack_id;
+  q->class_id = class_id;
+  STR_init(&q->name, name);
+  SLIST_init(&q->params,params,params_len);
+  q->params_len = params_len;
+  q->is_simplified = false;
+  ILIST_init(&q->func_attrs,attrs,MAX_FUNCTION_ATTRIBUTES);
+  q->param_types = 0;
+  q->param_defaults = 0;
+  q->line = line;
+  q->source_id = source_id;
+
+  q->next = 0;
+  if (entry_table.fuhs_start == 0)
+    entry_table.fuhs_start = entry_table.fuhs_end = q;
+  else {
+    entry_table.fuhs_end->next = q;
+    entry_table.fuhs_end = q;
   }
-  return null;
+
+  return entry_table.func_id;
 }
 

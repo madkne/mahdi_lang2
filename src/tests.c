@@ -14,6 +14,8 @@ void TEST_main(){
     // COM_print_struct(PRINT_UTF8_ST);
     COM_print_struct(PRINT_TOKENS_SOURCE_ST);
     COM_print_struct(PRINT_DATA_TYPES_ST);
+    COM_print_struct(PRINT_FUNC_ST);
+    COM_print_struct(PRINT_IMPORT_ST);
   }
   //-------------------------------------
   // test regex pattern splitter
